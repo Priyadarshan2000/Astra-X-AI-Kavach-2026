@@ -1,0 +1,132 @@
+export const ARMY_TICKER = [
+  'KAVACH 2026 — INDIAN ARMY CYBER DEMONSTRATION',
+  'BHARAT DEFENCE MESH — 8 THEATRE NODES ONLINE',
+  'ASTRA-X KERNEL — DEFENSIVE HOLD ONLY',
+  'DELHI HQ UPLINK NOMINAL',
+  'FIELD SOFTWARE CERTIFICATION READY',
+  'NO LIVE TARGETING — LAB SANDBOX ONLY',
+]
+
+export const COMMAND_THEATRES = [
+  {
+    code: 'NC',
+    name: 'Northern Command',
+    hq: 'Udhampur',
+    sector: 'Himalayan theatre',
+    status: 'ARMED',
+    tone: 'pop-cyan',
+  },
+  {
+    code: 'WC',
+    name: 'Western Command',
+    hq: 'Chandimandir',
+    sector: 'Desert & plains grid',
+    status: 'SYNC',
+    tone: 'pop-violet',
+  },
+  {
+    code: 'SC',
+    name: 'Southern Command',
+    hq: 'Pune',
+    sector: 'Peninsular uplink',
+    status: 'HOLD',
+    tone: 'pop-magenta',
+  },
+  {
+    code: 'EC',
+    name: 'Eastern Command',
+    hq: 'Kolkata',
+    sector: 'Eastern sector mesh',
+    status: 'GREEN',
+    tone: 'pop-yellow',
+  },
+]
+
+export const MISSION_SCENES = [
+  {
+    id: 'uplink',
+    n: '01',
+    phase: 'PHASE I — COMMAND UPLINK',
+    hindi: 'राष्ट्रीय कमान कड़ी',
+    title: 'DELHI HQ SYNCHRONIZED',
+    copy: 'ASTRA-X authenticates with Army Cyber Command. Bharat defence mesh locks across Delhi, Mumbai, Hyderabad and eastern theatre gateways.',
+    progress: 18,
+    node: 'Delhi',
+    logs: [
+      '[00:00:01] AUTH KAVACH-2026-CLEARED — operator token accepted',
+      '[00:00:03] UPLINK Army Cyber Command HQ — Sena Bhawan sector',
+      '[00:00:06] MESH 8/8 regional nodes responding — latency 42ms',
+      '[00:00:09] NATIONAL GRID status: ARMED — defensive hold engaged',
+    ],
+  },
+  {
+    id: 'twin',
+    n: '02',
+    phase: 'PHASE II — DIGITAL TWIN',
+    hindi: 'डिजिटल ट्विन तैनात',
+    title: 'FIELD UNIT TWIN ARMED',
+    copy: 'Secure Communication gateway cloned for tactical field software. Twin exercises packets before they reach border surveillance or logistics stacks.',
+    progress: 38,
+    node: 'Hyderabad',
+    logs: [
+      '[00:00:12] TWIN clone initiated — Secure Comms v4.2 firmware',
+      '[00:00:15] SPECTRUM mesh locked — Western Command relay',
+      '[00:00:18] PACKET ingest: 2.4 MB tactical source image',
+      '[00:00:21] TWIN status: NOMINAL — ready for static scan',
+    ],
+  },
+  {
+    id: 'scan',
+    n: '03',
+    phase: 'PHASE III — THREAT ANALYSIS',
+    hindi: 'खतरा विश्लेषण',
+    title: 'CWE INTELLIGENCE LOCKED',
+    copy: 'Pattern engine maps buffer overflow, command injection and format-string classes. Confidence 94% — aligned with Army software assurance doctrine.',
+    progress: 58,
+    node: 'Bengaluru',
+    logs: [
+      '[00:00:24] SCAN rotating — static analysis pipeline online',
+      '[00:00:27] FINDING CWE-120 buffer overflow — line 7 comms_gateway.c',
+      '[00:00:30] FINDING CWE-78 command injection — exec path flagged',
+      '[00:00:33] CONFIDENCE 94% — corpus match ARMY-SW-ASSURE-2024',
+    ],
+  },
+  {
+    id: 'patch',
+    n: '04',
+    phase: 'PHASE IV — HARDENING',
+    hindi: 'सुरक्षित पुनर्लेखन',
+    title: 'PATCH SYNTHESIZED',
+    copy: 'Bounded secure rewrite removes exec paths. Risk score drops 78%. Patch staged for lab fuzz before field clearance.',
+    progress: 78,
+    node: 'Chennai',
+    logs: [
+      '[00:00:36] PATCH synthesis — bounded rewrite locked',
+      '[00:00:39] EXEC path removed — strcpy replaced with strncpy',
+      '[00:00:42] RISK reduced 78% — attack surface minimized',
+      '[00:00:45] STAGING fuzz harness — Chennai coast lab',
+    ],
+  },
+  {
+    id: 'hold',
+    n: '05',
+    phase: 'PHASE V — MISSION CERTIFIED',
+    hindi: 'मिशन प्रमाणित',
+    title: 'DEFENCE HOLD — GREEN',
+    copy: 'Fuzz corpus rejected all attack variants. Five tactical regression suites certified. Mission software cleared for Army reviewer walkthrough.',
+    progress: 100,
+    node: 'Kolkata',
+    logs: [
+      '[00:00:48] FUZZ 1,240 variants — 0 critical bypass',
+      '[00:00:51] REGRESSION 5/5 suites GREEN',
+      '[00:00:54] CERTIFICATE KAVACH-2026-ASTRA-7741 issued',
+      '[00:00:57] MISSION HOLD — ready for command deck review',
+    ],
+  },
+]
+
+export const HERO_BADGES = [
+  { label: 'Kavach 2026', tone: 'sticker-yellow' },
+  { label: 'Indian Army Cyber', tone: 'sticker-violet' },
+  { label: 'Defensive only', tone: '' },
+]
