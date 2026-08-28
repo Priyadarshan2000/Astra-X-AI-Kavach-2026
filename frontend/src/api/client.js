@@ -1,13 +1,13 @@
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
 const TIMEOUT_MS = 2500
 
-async function request(path, { method = 'GET', body, token, isForm } = {}) {
+async function request(path, { method = 'GET', body, token, isForm, timeoutMs } = {}) {
   const headers = {}
   if (!isForm) headers['Content-Type'] = 'application/json'
   if (token) headers.Authorization = `Bearer ${token}`
 
   const controller = new AbortController()
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS)
+  const timer = setTimeout(() => controller.abort(), timeoutMs ?? TIMEOUT_MS)
 
   try {
     const res = await fetch(`${API_BASE}${path}`, {
@@ -53,6 +53,7 @@ export const api = {
   fuzz: (payload, token) => request('/fuzz.php', { method: 'POST', body: payload, token }),
   regression: (payload, token) => request('/regression.php', { method: 'POST', body: payload, token }),
   reports: (token) => request('/reports.php', { token }),
+  chat: (payload) => request('/chat.php', { method: 'POST', body: payload, timeoutMs: 15000 }),
 }
 
 export function isApiReachableError(error) {

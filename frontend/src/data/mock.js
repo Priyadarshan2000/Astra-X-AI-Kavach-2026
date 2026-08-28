@@ -6,12 +6,12 @@ export const PLATFORM_STATS = [
 ]
 
 export const ATTACK_ARCS = [
-  { from: [77.2, 28.6], to: [-77.0, 38.9], intensity: 0.9, label: 'DEL → IAD' },
-  { from: [139.7, 35.7], to: [-0.1, 51.5], intensity: 0.7, label: 'TYO → LON' },
-  { from: [37.6, 55.8], to: [103.8, 1.3], intensity: 0.8, label: 'MOW → SIN' },
-  { from: [-46.6, -23.5], to: [2.35, 48.8], intensity: 0.6, label: 'SAO → PAR' },
-  { from: [121.5, 31.2], to: [-118.2, 34.0], intensity: 0.85, label: 'SHA → LAX' },
-  { from: [151.2, -33.9], to: [77.2, 28.6], intensity: 0.5, label: 'SYD → DEL' },
+  { from: [121.5, 31.2], to: [77.2, 28.6], intensity: 0.92, label: 'SHA→DEL' },
+  { from: [139.7, 35.7], to: [77.2, 28.6], intensity: 0.78, label: 'TYO→DEL' },
+  { from: [37.6, 55.8], to: [77.2, 28.6], intensity: 0.85, label: 'MOW→DEL' },
+  { from: [151.2, -33.9], to: [77.2, 28.6], intensity: 0.55, label: 'SYD→DEL' },
+  { from: [-77.0, 38.9], to: [77.2, 28.6], intensity: 0.88, label: 'IAD→DEL' },
+  { from: [103.8, 1.3], to: [77.2, 28.6], intensity: 0.72, label: 'SIN→DEL' },
 ]
 
 export const ALERTS = [

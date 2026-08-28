@@ -403,17 +403,51 @@ export default function Landing() {
           </div>
         </div>
 
-        <div className="glass pop-magenta mt-12 rounded-2xl p-5">
-          <div className="mb-3 flex items-center justify-between gap-2">
-            <p className="hud-label">Threat ingress map</p>
-            <span className="sticker sticker-magenta">INDO-PAC FABRIC</span>
+        <div className="glass pop-magenta mt-12 overflow-hidden rounded-2xl">
+          <div className="tricolor-ribbon" aria-hidden>
+            <span />
+            <span />
+            <span />
           </div>
-          <p className="mb-3 text-sm text-fog">
-            Simulated attack hops toward Bharat nodes — ASTRA holds defensive posture. No live targeting in this
-            demonstration.
-          </p>
-          <div className="viz-well !min-h-0 p-3">
-            <AttackMap className="h-44 sm:h-56" idPrefix="hero" />
+          <div className="p-5 sm:p-6">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <p className="hud-label">Threat ingress map</p>
+                <p className="hindi-kicker mt-2 text-sm">भारत नोड्स पर इनबाउंड खतरा — सभी अवरुद्ध</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <span className="sticker sticker-magenta">INDO-PAC FABRIC</span>
+                <span className="sticker sticker-yellow">DEFENCE HOLD</span>
+              </div>
+            </div>
+            <p className="mt-3 max-w-3xl text-sm leading-relaxed text-fog">
+              Simulated attack hops from Shanghai, Tokyo, Moscow, Sydney, Washington and Singapore converge on Delhi HQ.
+              ASTRA-X maintains defensive posture — no live targeting in this Kavach 2026 demonstration.
+            </p>
+
+            <div className="mt-5 grid gap-4 lg:grid-cols-12">
+              <div className="grid gap-2 sm:grid-cols-2 lg:col-span-3 lg:grid-cols-1">
+                {[
+                  { val: '6', lbl: 'Inbound hops', tone: 'pop-cyan' },
+                  { val: '0', lbl: 'Breaches', tone: 'pop-yellow' },
+                  { val: '5', lbl: 'Bharat nodes', tone: 'pop-violet' },
+                  { val: '100%', lbl: 'Hold status', tone: 'pop-magenta' },
+                ].map((stat) => (
+                  <div
+                    key={stat.lbl}
+                    className={`rounded-xl border-[2px] border-ink bg-panel px-3 py-2.5 shadow-[3px_3px_0_#00c8dc]`}
+                  >
+                    <p className="font-display text-xl text-mist">{stat.val}</p>
+                    <p className="mt-0.5 font-display text-[8px] tracking-[0.16em] text-fog uppercase">{stat.lbl}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="lg:col-span-9">
+                <div className="viz-well viz-well-tactical min-h-[280px] p-2 sm:min-h-[320px]">
+                  <AttackMap variant="hero" className="h-full min-h-[260px] sm:min-h-[300px]" idPrefix="hero" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

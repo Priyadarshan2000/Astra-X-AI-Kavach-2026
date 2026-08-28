@@ -6,6 +6,7 @@ import PageTransition from './components/ui/PageTransition.jsx'
 import Loader from './components/ui/Loader.jsx'
 import HudFrame from './components/ui/HudFrame.jsx'
 import StatusBar from './components/ui/StatusBar.jsx'
+import AgentChat from './components/agent/AgentChat.jsx'
 import { useAuth } from './context/AuthContext.jsx'
 import { useEffect, useState } from 'react'
 
@@ -68,6 +69,7 @@ export default function App() {
         </PageTransition>
       </Suspense>
       <StatusBar />
+      <AgentChat />
     </div>
   )
 }

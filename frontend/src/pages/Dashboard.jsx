@@ -50,22 +50,28 @@ export default function Dashboard() {
       <MissionStrip />
 
       <div className="grid gap-6 pb-2 lg:grid-cols-12">
-        <GlassPanel className="flex min-h-[340px] flex-col p-5 lg:col-span-4" delay={0.04} tone="cyan">
+        <GlassPanel className="flex min-h-[360px] flex-col p-5 lg:col-span-4" delay={0.04} tone="cyan">
           <div className="mb-3 flex items-center justify-between gap-2">
-            <p className="hud-label">Live threat radar</p>
-            <span className="sticker">7 TRACKS</span>
+            <div>
+              <p className="hud-label">Live threat radar</p>
+              <p className="mt-1 font-display text-[8px] tracking-[0.2em] text-fog">DELHI SECTOR · 250 KM</p>
+            </div>
+            <span className="sticker sticker-yellow">7 TRACKS</span>
           </div>
-          <div className="viz-well grid flex-1 place-items-center p-3">
-            <ThreatRadar className="h-56 w-56" idPrefix="deck" />
+          <div className="viz-well viz-well-tactical grid flex-1 place-items-center p-2">
+            <ThreatRadar className="h-full w-full max-h-60 max-w-60" idPrefix="deck" />
           </div>
         </GlassPanel>
-        <GlassPanel className="flex min-h-[340px] flex-col p-5 lg:col-span-5" delay={0.1} tone="violet">
+        <GlassPanel className="flex min-h-[360px] flex-col p-5 lg:col-span-5" delay={0.1} tone="violet">
           <div className="mb-3 flex items-center justify-between gap-2">
-            <p className="hud-label">Global attack map</p>
+            <div>
+              <p className="hud-label">Indo-Pac threat fabric</p>
+              <p className="mt-1 font-display text-[8px] tracking-[0.2em] text-fog">INBOUND HOPS → BHARAT HQ</p>
+            </div>
             <span className="sticker sticker-magenta">6 HOPS</span>
           </div>
-          <div className="viz-well flex-1 p-3">
-            <AttackMap className="h-56" idPrefix="deck" />
+          <div className="viz-well viz-well-tactical flex-1 p-2">
+            <AttackMap className="h-full min-h-[220px]" idPrefix="deck" />
           </div>
         </GlassPanel>
         <GlassPanel className="flex min-h-[340px] flex-col p-5 lg:col-span-3" delay={0.14} hover={false} tone="magenta">
