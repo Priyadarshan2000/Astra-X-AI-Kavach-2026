@@ -34,7 +34,7 @@ export default function DigitalTwin() {
               <h2 className="mt-4 font-display text-lg tracking-widest text-mist">{twin.name}</h2>
               <p className="mt-1 text-xs uppercase tracking-widest text-amber">{twin.unit}</p>
               <p className="mt-3 text-sm text-fog">{twin.description}</p>
-              <div className="mt-5 h-3 overflow-hidden rounded-md border-[2.5px] border-void bg-abyss shadow-[3px_3px_0_#ff2e97]">
+              <div className="mt-5 h-3 overflow-hidden rounded-md border-[2.5px] border-ink bg-abyss shadow-[3px_3px_0_#ff2e97]">
                 <div className="h-full bg-gradient-to-r from-amber to-magenta" style={{ width: `${twin.threat}%` }} />
               </div>
               <p className="mt-2 text-[11px] uppercase tracking-widest text-fog">Threat index {twin.threat}</p>
@@ -73,12 +73,12 @@ export default function DigitalTwin() {
               <p className="mt-3 text-fog">{active.description}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {active.telemetry.map((t) => (
-                  <span key={t} className="rounded-lg border-[2.5px] border-void bg-amber px-3 py-1 text-xs text-void shadow-[2px_2px_0_#ff2e97]">
+                  <span key={t} className="rounded-lg border-[2.5px] border-ink bg-amber px-3 py-1 text-xs text-ink shadow-[2px_2px_0_#ff2e97]">
                     {t}
                   </span>
                 ))}
               </div>
-              <pre className="mt-5 max-h-40 overflow-auto rounded-xl bg-black/50 p-4 text-[11px] text-cyan/80">
+              <pre className="mt-5 max-h-40 overflow-auto rounded-xl bg-code p-4 text-[11px] text-cyan/80">
                 {(SAMPLE_CODE[active.language] || '').slice(0, 420)}
               </pre>
               <div className="mt-6 flex gap-3">

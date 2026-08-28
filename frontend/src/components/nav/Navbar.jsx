@@ -3,6 +3,7 @@ import { Shield, LogOut, Menu, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/AuthContext.jsx'
+import ThemeToggle from '../ui/ThemeToggle.jsx'
 
 const LINKS = [
   { to: '/dashboard', label: 'Deck' },
@@ -44,7 +45,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`site-nav fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled || !isLanding
           ? 'border-b-[2.5px] border-cyan bg-void/95'
           : 'bg-transparent'
@@ -52,7 +53,7 @@ export default function Navbar() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5 py-3">
         <button onClick={() => navigate('/')} className="group flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-lg border-[2.5px] border-void bg-cyan text-void shadow-[3px_3px_0_#ff2e97] transition-transform duration-150 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 group-hover:shadow-[5px_5px_0_#ff2e97]">
+          <span className="grid h-9 w-9 place-items-center rounded-lg border-[2.5px] border-ink bg-cyan text-ink shadow-[3px_3px_0_#ff2e97] transition-transform duration-150 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 group-hover:shadow-[5px_5px_0_#ff2e97]">
             <Shield className="h-4 w-4" />
           </span>
           <span className="font-display text-sm tracking-[0.22em] text-mist">ASTRA-X</span>
@@ -65,7 +66,7 @@ export default function Navbar() {
               to={link.to}
               className={({ isActive }) =>
                 `relative rounded-lg px-3 py-1.5 font-ui text-[10px] tracking-[0.18em] uppercase transition-colors duration-200 ${
-                  isActive ? 'text-void' : 'text-fog hover:text-mist'
+                  isActive ? 'text-ink' : 'text-fog hover:text-mist'
                 }`
               }
             >
@@ -74,7 +75,7 @@ export default function Navbar() {
                   {isActive && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-lg border-[2px] border-void bg-amber shadow-[3px_3px_0_#ff2e97]"
+                      className="absolute inset-0 rounded-lg border-[2px] border-ink bg-amber shadow-[3px_3px_0_#ff2e97]"
                       transition={{ type: 'spring', stiffness: 420, damping: 32 }}
                     />
                   )}
@@ -86,13 +87,14 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3">
-          <div className="sticker-yellow hidden items-center gap-2 rounded-lg border-[2.5px] border-void px-3 py-1 shadow-[3px_3px_0_#ff2e97] md:flex">
+          <div className="sticker-yellow hidden items-center gap-2 rounded-lg border-[2.5px] border-ink px-3 py-1 shadow-[3px_3px_0_#ff2e97] xl:flex">
             <span className="live-dot" />
-            <span className="font-display text-[9px] tracking-[0.18em] text-void">ONLINE</span>
-            <span className="font-ui text-[10px] text-void/70">{time}</span>
+            <span className="font-display text-[9px] tracking-[0.18em] text-ink">ONLINE</span>
+            <span className="font-ui text-[10px] text-ink/70">{time}</span>
           </div>
+          <ThemeToggle />
           <button
-            className="rounded-lg border-[2.5px] border-cyan bg-void p-2 text-cyan shadow-[3px_3px_0_#8b5cff] lg:hidden"
+            className="rounded-lg border-[2.5px] border-cyan bg-panel p-2 text-cyan shadow-[3px_3px_0_#8b5cff] lg:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label="Menu"
           >
@@ -106,7 +108,7 @@ export default function Navbar() {
                   logout()
                   navigate('/')
                 }}
-                className="rounded-lg border-[2.5px] border-magenta bg-void p-2 text-magenta shadow-[3px_3px_0_#ffe44d] transition hover:-translate-x-0.5 hover:-translate-y-0.5"
+                className="rounded-lg border-[2.5px] border-magenta bg-panel p-2 text-magenta shadow-[3px_3px_0_#ffe44d] transition hover:-translate-x-0.5 hover:-translate-y-0.5"
                 aria-label="Sign out"
               >
                 <LogOut className="h-4 w-4" />
@@ -115,7 +117,7 @@ export default function Navbar() {
           ) : (
             <button
               onClick={() => navigate('/login')}
-              className="rounded-lg border-[2.5px] border-void bg-magenta px-4 py-1.5 font-display text-[10px] tracking-[0.2em] text-mist shadow-[3px_3px_0_#00e5ff] transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_#00e5ff]"
+              className="rounded-lg border-[2.5px] border-ink bg-magenta px-4 py-1.5 font-display text-[10px] tracking-[0.2em] text-white shadow-[3px_3px_0_#00e5ff] transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_#00e5ff]"
             >
               ACCESS
             </button>
@@ -129,7 +131,7 @@ export default function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden border-t-[2.5px] border-cyan bg-void lg:hidden"
+            className="overflow-hidden border-t-[2.5px] border-cyan bg-panel lg:hidden"
           >
             <div className="grid gap-1 px-5 py-3">
               {LINKS.map((link) => (
@@ -139,7 +141,7 @@ export default function Navbar() {
                   className={({ isActive }) =>
                     `rounded-lg px-3 py-2 text-sm tracking-[0.16em] uppercase ${
                       isActive
-                        ? 'border-[2px] border-void bg-amber text-void shadow-[3px_3px_0_#ff2e97]'
+                        ? 'border-[2px] border-ink bg-amber text-ink shadow-[3px_3px_0_#ff2e97]'
                         : 'text-fog'
                     }`
                   }

@@ -4,7 +4,7 @@ const LANG = { c: 'c', cpp: 'cpp', python: 'python', java: 'java' }
 
 export default function CodePane({ code = '', language = 'c', highlightLines = [], label }) {
   return (
-    <div className="flex h-full min-h-[320px] flex-col overflow-hidden rounded-2xl border-[2.5px] border-cyan bg-void shadow-[6px_6px_0_#8b5cff]">
+    <div className="flex h-full min-h-[320px] flex-col overflow-hidden rounded-2xl border-[2.5px] border-cyan bg-code shadow-[6px_6px_0_#8b5cff]">
       {label && (
         <div className="flex items-center justify-between border-b-[2.5px] border-cyan bg-panel px-4 py-2">
           <span className="hud-label">{label}</span>

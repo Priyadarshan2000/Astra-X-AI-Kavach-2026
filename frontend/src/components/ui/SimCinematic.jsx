@@ -71,7 +71,7 @@ export default function SimCinematic({ onClose, onLaunch }) {
           <div className="relative mx-auto h-40 w-40">
             {idx === 0 && <ThreatRadar className="h-full w-full" />}
             {idx > 0 && (
-              <div className="grid h-full place-items-center rounded-2xl border-[2.5px] border-void bg-cyan text-void shadow-[8px_8px_0_#ff2e97]">
+              <div className="grid h-full place-items-center rounded-2xl border-[2.5px] border-ink bg-cyan text-ink shadow-[8px_8px_0_#ff2e97]">
                 <Icon className="h-14 w-14" />
               </div>
             )}
@@ -89,7 +89,7 @@ export default function SimCinematic({ onClose, onLaunch }) {
                 <p className="mt-3 text-fog">{scene.copy}</p>
               </motion.div>
             </AnimatePresence>
-            <div className="mt-6 h-3 overflow-hidden rounded-md border-[2.5px] border-void bg-panel shadow-[3px_3px_0_#8b5cff]">
+            <div className="mt-6 h-3 overflow-hidden rounded-md border-[2.5px] border-ink bg-panel shadow-[3px_3px_0_#8b5cff]">
               <motion.div
                 className="h-full bg-gradient-to-r from-cyan via-amber to-magenta"
                 initial={{ width: 0 }}

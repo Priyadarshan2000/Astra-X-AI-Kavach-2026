@@ -50,7 +50,7 @@ export default function Register() {
         <input placeholder="Callsign" value={name} onChange={(e) => setName(e.target.value)} className="field mt-6" />
         <input placeholder="Network email" value={email} onChange={(e) => setEmail(e.target.value)} className="field mt-3" />
         <input type="password" placeholder="Passphrase" value={password} onChange={(e) => setPassword(e.target.value)} className="field mt-3" />
-        <div className="mt-3 h-3 overflow-hidden rounded-md border-[2.5px] border-void bg-panel shadow-[3px_3px_0_#8b5cff]">
+        <div className="mt-3 h-3 overflow-hidden rounded-md border-[2.5px] border-ink bg-panel shadow-[3px_3px_0_#8b5cff]">
           <motion.div
             className="h-full bg-gradient-to-r from-crimson via-amber to-emerald"
             animate={{ width: `${score}%` }}

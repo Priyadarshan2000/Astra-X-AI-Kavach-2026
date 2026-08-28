@@ -17,7 +17,7 @@ const CONTINENTS = [
 
 export default function AttackMap({ className = '', idPrefix = 'map' }) {
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative attack-map ${className}`}>
       <svg viewBox="0 0 100 56" className="h-full w-full">
         <defs>
           <linearGradient id={`${idPrefix}-arc`} x1="0" y1="0" x2="1" y2="0">
@@ -33,7 +33,7 @@ export default function AttackMap({ className = '', idPrefix = 'map' }) {
           </filter>
         </defs>
         {CONTINENTS.map((d, i) => (
-          <path key={i} d={d} fill="rgba(0,229,255,0.12)" stroke="rgba(0,229,255,0.35)" strokeWidth="0.25" />
+          <path key={i} d={d} fill="rgba(0,229,255,0.32)" stroke="rgba(0,229,255,0.85)" strokeWidth="0.45" />
         ))}
         {ATTACK_ARCS.map((arc, i) => {
           const [x1, y1] = project(arc.from)

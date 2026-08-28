@@ -1,10 +1,10 @@
 export default function NeonButton({ children, onClick, variant = 'primary', className = '', type = 'button' }) {
   const styles =
     variant === 'ghost'
-      ? 'bg-void text-cyan border-cyan shadow-[5px_5px_0_#8b5cff] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[7px_7px_0_#8b5cff]'
+      ? 'btn-ghost bg-void text-cyan border-cyan shadow-[5px_5px_0_#8b5cff] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[7px_7px_0_#8b5cff]'
       : variant === 'yellow'
-        ? 'bg-amber text-void border-void shadow-[5px_5px_0_#ff2e97] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[7px_7px_0_#ff2e97]'
-        : 'bg-cyan text-void border-void shadow-[5px_5px_0_#ff2e97] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[7px_7px_0_#ff2e97]'
+        ? 'bg-amber text-ink border-ink shadow-[5px_5px_0_#ff2e97] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[7px_7px_0_#ff2e97]'
+        : 'bg-cyan text-ink border-ink shadow-[5px_5px_0_#ff2e97] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[7px_7px_0_#ff2e97]'
 
   return (
     <button

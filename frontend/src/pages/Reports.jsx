@@ -21,8 +21,8 @@ export default function Reports() {
       <GlassPanel className="p-0" hover={false} tone="cyan">
         <div className="border-b-[2.5px] border-cyan bg-magenta px-8 py-6">
           <p className="sticker sticker-yellow">{report.classification}</p>
-          <h2 className="mt-3 font-display text-2xl text-mist text-glow">{report.project}</h2>
-          <p className="mt-1 text-sm text-mist/80">
+          <h2 className="mt-3 font-display text-2xl text-white text-glow">{report.project}</h2>
+          <p className="mt-1 text-sm text-white/80">
             Dossier {report.id} · {new Date(report.generatedAt).toUTCString()}
           </p>
         </div>

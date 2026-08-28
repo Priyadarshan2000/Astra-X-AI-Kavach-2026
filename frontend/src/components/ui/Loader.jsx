@@ -26,13 +26,13 @@ export default function Loader({ progress = 0, label = 'ARMING ASTRA-X KERNEL' }
       <div className="relative grid place-items-center">
         <div className="boot-ring absolute h-56 w-56 rounded-full border-[3px] border-cyan/40 animate-pulse-ring" />
         <div className="boot-ring absolute h-72 w-72 rounded-full border-[3px] border-magenta/40 animate-pulse-ring" style={{ animationDelay: '0.6s' }} />
-        <div className="boot-shield relative grid h-36 w-36 place-items-center rounded-2xl border-[3px] border-void bg-cyan text-void shadow-[10px_10px_0_#ff2e97]">
+        <div className="boot-shield relative grid h-36 w-36 place-items-center rounded-2xl border-[3px] border-ink bg-cyan text-ink shadow-[10px_10px_0_#ff2e97]">
           <Shield className="h-16 w-16" />
         </div>
       </div>
       <div className="boot-copy absolute bottom-16 left-1/2 w-[min(420px,90vw)] -translate-x-1/2">
         <p className="hud-label mb-3 w-full text-center">{label}</p>
-        <div className="h-3 overflow-hidden rounded-md border-[2.5px] border-void bg-panel shadow-[4px_4px_0_#8b5cff]">
+        <div className="h-3 overflow-hidden rounded-md border-[2.5px] border-ink bg-panel shadow-[4px_4px_0_#8b5cff]">
           <div
             className="h-full bg-gradient-to-r from-cyan via-amber to-magenta"
             style={{ width: `${Math.min(100, progress)}%`, transition: 'width 180ms linear' }}

@@ -2,10 +2,10 @@ import { motion } from 'framer-motion'
 import { ALERTS } from '../../data/mock.js'
 
 const TONE = {
-  critical: 'text-mist border-void bg-crimson shadow-[3px_3px_0_#ffe44d]',
-  high: 'text-void border-void bg-amber shadow-[3px_3px_0_#ff2e97]',
-  medium: 'text-void border-void bg-cyan shadow-[3px_3px_0_#8b5cff]',
-  low: 'text-void border-void bg-emerald shadow-[3px_3px_0_#00e5ff]',
+  critical: 'text-white border-ink bg-crimson shadow-[3px_3px_0_#ffe44d]',
+  high: 'text-ink border-ink bg-amber shadow-[3px_3px_0_#ff2e97]',
+  medium: 'text-ink border-ink bg-cyan shadow-[3px_3px_0_#8b5cff]',
+  low: 'text-ink border-ink bg-emerald shadow-[3px_3px_0_#00e5ff]',
 }
 
 export default function ActiveAlerts() {
@@ -19,11 +19,13 @@ export default function ActiveAlerts() {
           transition={{ delay: 0.15 + i * 0.08 }}
           className={`rounded-lg border-[2.5px] px-3 py-2 ${TONE[alert.level]}`}
         >
-          <div className="flex items-center justify-between font-display text-[10px] tracking-widest uppercase">
-            <span>{alert.id}</span>
-            <span>{alert.time}</span>
+          <div className="flex items-center justify-between gap-2 font-display text-[10px] tracking-widest uppercase">
+            <span>
+              {alert.id} · {alert.level}
+            </span>
+            <span className="opacity-80">{alert.time}</span>
           </div>
-          <p className="mt-1 text-sm text-mist">{alert.title}</p>
+          <p className="mt-1 text-sm leading-snug">{alert.title}</p>
         </motion.div>
       ))}
     </div>

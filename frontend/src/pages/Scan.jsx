@@ -93,7 +93,7 @@ export default function Scan() {
               <button
                 key={lang}
                 onClick={() => ingestSource({ source: SAMPLE_CODE[lang], language: lang, fileName: `sample.${lang === 'python' ? 'py' : lang}` })}
-                className="rounded-lg border-[2.5px] border-void bg-cyan px-3 py-1 text-xs uppercase tracking-widest text-void shadow-[3px_3px_0_#ff2e97] transition hover:-translate-x-0.5 hover:-translate-y-0.5"
+                className="rounded-lg border-[2.5px] border-ink bg-cyan px-3 py-1 text-xs uppercase tracking-widest text-ink shadow-[3px_3px_0_#ff2e97] transition hover:-translate-x-0.5 hover:-translate-y-0.5"
               >
                 Load {lang}
               </button>
@@ -109,7 +109,7 @@ export default function Scan() {
               {mission.fileName} · {mission.language}
             </span>
           </div>
-          <pre className="max-h-64 overflow-auto rounded-xl bg-black/50 p-4 text-[12px] leading-6 text-cyan/80">{preview}</pre>
+          <pre className="max-h-64 overflow-auto rounded-xl bg-code p-4 text-[12px] leading-6 text-cyan/80">{preview}</pre>
           <div className="mt-5">
             <NeonButton onClick={startScan}>{busy ? 'Scanning…' : 'Initiate Scan'}</NeonButton>
           </div>
@@ -118,7 +118,7 @@ export default function Scan() {
 
       {phase >= 0 && (
         <GlassPanel className="mt-6 p-6" hover={false} tone="yellow">
-          <div className="relative h-24 overflow-hidden rounded-xl bg-black/50">
+          <div className="relative h-24 overflow-hidden rounded-xl bg-code">
             <div className="absolute inset-x-0 h-10 bg-gradient-to-b from-cyan/30 to-transparent" style={{ animation: 'scan-beam 1.6s linear infinite' }} />
             <div className="absolute inset-0 flex items-center justify-center gap-2 text-cyan">
               <Brain className="h-5 w-5 animate-flicker" />
@@ -127,7 +127,7 @@ export default function Scan() {
           </div>
           <div className="mt-4 grid gap-2 sm:grid-cols-4">
             {STEPS.map((step, i) => (
-              <div key={step} className={`rounded-lg border-[2.5px] px-3 py-2 text-xs ${i <= phase ? 'border-void bg-amber text-void shadow-[3px_3px_0_#ff2e97]' : 'border-cyan/40 text-fog'}`}>
+              <div key={step} className={`rounded-lg border-[2.5px] px-3 py-2 text-xs ${i <= phase ? 'border-ink bg-amber text-ink shadow-[3px_3px_0_#ff2e97]' : 'border-cyan/40 text-fog'}`}>
                 {step}
               </div>
             ))}

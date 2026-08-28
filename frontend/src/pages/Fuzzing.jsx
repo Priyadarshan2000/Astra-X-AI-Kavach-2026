@@ -50,20 +50,20 @@ export default function Fuzzing() {
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <GlassPanel className="p-5" hover={false} tone="magenta">
           <p className="hud-label mb-3">Before patch</p>
-          <div className="mb-4 h-3 overflow-hidden rounded-md border-[2.5px] border-void bg-panel shadow-[3px_3px_0_#ff2e97]">
+          <div className="mb-4 h-3 overflow-hidden rounded-md border-[2.5px] border-ink bg-panel shadow-[3px_3px_0_#ff2e97]">
             <div className="h-full bg-crimson" style={{ width: fuzz ? '92%' : '0%' }} />
           </div>
-          <pre className="min-h-48 rounded-xl bg-black p-4 text-[12px] leading-6 text-crimson/90">
+          <pre className="min-h-48 rounded-xl bg-code p-4 text-[12px] leading-6 text-crimson/90">
             {(fuzz?.logBefore || ['[STANDBY] awaiting corpus']).join('\n')}
             <span className="ml-1 inline-block h-3 w-2 bg-crimson" style={{ animation: 'terminal-blink 1s step-end infinite' }} />
           </pre>
         </GlassPanel>
         <GlassPanel className="p-5" hover={false} tone="cyan">
           <p className="hud-label mb-3">After patch</p>
-          <div className="mb-4 h-3 overflow-hidden rounded-md border-[2.5px] border-void bg-panel shadow-[3px_3px_0_#22d3a6]">
+          <div className="mb-4 h-3 overflow-hidden rounded-md border-[2.5px] border-ink bg-panel shadow-[3px_3px_0_#22d3a6]">
             <div className="h-full bg-emerald" style={{ width: stage === 'after' ? '98%' : '0%' }} />
           </div>
-          <pre className="min-h-48 rounded-xl bg-black p-4 text-[12px] leading-6 text-emerald/90">
+          <pre className="min-h-48 rounded-xl bg-code p-4 text-[12px] leading-6 text-emerald/90">
             {(stage === 'after' ? fuzz?.logAfter : ['[HOLD] patch not yet certified']).join('\n')}
           </pre>
         </GlassPanel>
