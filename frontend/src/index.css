@@ -757,6 +757,11 @@ body:has(.status-bar) {
   padding-bottom: 2.6rem;
 }
 
+.page-shell {
+  position: relative;
+  min-height: 100svh;
+}
+
 .boot-screen {
   position: fixed;
   inset: 0;
@@ -1074,7 +1079,8 @@ html[data-theme="light"] ::selection {
   .live-dot,
   .glass:hover::after,
   .scan-y,
-  .status-bar-tick > div {
+  .status-bar-tick > div,
+  .india-sweep {
     animation: none !important;
   }
 }

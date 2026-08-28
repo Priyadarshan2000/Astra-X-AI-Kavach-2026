@@ -68,20 +68,20 @@ export default function Loader({ progress = 0, label = 'ARMING ASTRA-X KERNEL' }
       <div className="hud-corners-tr" />
       <div className="hud-corners-bl" />
 
-      <div className="relative z-10 flex min-h-svh flex-col items-center justify-center px-5 py-16">
+      <div className="relative z-10 flex min-h-svh flex-col items-center justify-center px-5 py-10">
         <p className="boot-kicker hud-label">
           <span className="live-dot inline-block align-middle" /> Kavach 2026 // Bharat cyber command
         </p>
-        <h1 className="boot-title title-pop mt-4 text-center font-display text-4xl tracking-[0.16em] sm:text-5xl">ASTRA-X</h1>
-        <p className="boot-kicker mt-2 font-display text-[10px] tracking-[0.28em] text-fog">NATIONAL DEFENCE GRID</p>
+        <h1 className="boot-title title-pop mt-3 text-center font-display text-4xl tracking-[0.16em] sm:text-5xl">ASTRA-X</h1>
+        <p className="mt-2 font-display text-[10px] tracking-[0.28em] text-fog">NATIONAL DEFENCE GRID</p>
 
-        <div className="boot-frame glass pop-cyan mt-7 w-full max-w-[420px] rounded-2xl p-4">
-          <div className="mb-3 flex items-center justify-between gap-2">
+        <div className="boot-frame glass pop-cyan mt-5 w-full max-w-[400px] rounded-2xl p-3">
+          <div className="mb-2 flex items-center justify-between gap-2">
             <span className="hud-label">India mesh</span>
             <span className="sticker sticker-yellow">{nodesHot}/{NODES.length} NODES</span>
           </div>
-          <div className="viz-well !min-h-0 grid place-items-center p-3">
-            <IndiaMap progress={progress} className="h-[min(52vh,420px)] w-full" />
+          <div className="viz-well !min-h-0 grid place-items-center p-2">
+            <IndiaMap progress={progress} className="h-[min(42vh,340px)] w-full" />
           </div>
         </div>
 
