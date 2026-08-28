@@ -44,7 +44,7 @@ export default function Fuzzing() {
           ].map(([label, value], i) => (
             <GlassPanel key={label} className="p-5" tone={['cyan', 'violet', 'magenta', 'yellow'][i]}>
               <p className="hud-label">{label}</p>
-              <p className="mt-2 font-display text-2xl text-cyan">{value}</p>
+              <p className="mt-2 font-display text-2xl text-mist">{value}</p>
             </GlassPanel>
           ))}
         </div>

@@ -46,7 +46,7 @@ export default function Register() {
           <Fingerprint className="h-10 w-10 text-violet animate-flicker" />
         </div>
         <p className="hud-label">Clearance request</p>
-        <h1 className="mt-2 font-display text-2xl tracking-[0.18em] text-mist text-glow">REGISTER OPERATOR</h1>
+        <h1 className="mt-2 font-display text-2xl tracking-[0.18em] title-pop">REGISTER OPERATOR</h1>
         <input placeholder="Callsign" value={name} onChange={(e) => setName(e.target.value)} className="field mt-6" />
         <input placeholder="Network email" value={email} onChange={(e) => setEmail(e.target.value)} className="field mt-3" />
         <input type="password" placeholder="Passphrase" value={password} onChange={(e) => setPassword(e.target.value)} className="field mt-3" />

@@ -34,8 +34,8 @@ export default function App() {
   const [progress, setProgress] = useState(8)
 
   useEffect(() => {
-    const t = setInterval(() => setProgress((p) => Math.min(100, p + 7)), 90)
-    const done = setTimeout(() => setBoot(false), 1800)
+    const t = setInterval(() => setProgress((p) => Math.min(100, p + 4)), 110)
+    const done = setTimeout(() => setBoot(false), 3000)
     return () => {
       clearInterval(t)
       clearTimeout(done)

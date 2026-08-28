@@ -757,6 +757,78 @@ body:has(.status-bar) {
   padding-bottom: 2.6rem;
 }
 
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: var(--void);
+  overflow: hidden;
+}
+
+.boot-tricolor {
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 5px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.boot-tricolor span:nth-child(1) {
+  background: #ff9933;
+}
+
+.boot-tricolor span:nth-child(2) {
+  background: #fff5ff;
+}
+
+.boot-tricolor span:nth-child(3) {
+  background: #138808;
+}
+
+.boot-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(8px);
+}
+
+.boot-orb-a {
+  width: 280px;
+  height: 280px;
+  top: -8%;
+  left: -6%;
+  background: rgb(255 153 51 / 0.16);
+}
+
+.boot-orb-b {
+  width: 320px;
+  height: 320px;
+  right: -8%;
+  bottom: -10%;
+  background: rgb(19 136 8 / 0.12);
+}
+
+.india-stroke {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.india-sweep {
+  animation: india-sweep 2.6s linear infinite;
+}
+
+@keyframes india-sweep {
+  from {
+    transform: translateY(-40px);
+  }
+  to {
+    transform: translateY(340px);
+  }
+}
+
 .viz-well {
   background:
     radial-gradient(ellipse at 50% 42%, rgb(0 229 255 / 0.12), transparent 58%),
