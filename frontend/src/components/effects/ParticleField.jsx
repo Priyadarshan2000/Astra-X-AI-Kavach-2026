@@ -35,11 +35,10 @@ export default function ParticleField({ count = 70 }) {
       }
 
       ctx.lineWidth = 0.6
-      const light = document.documentElement.getAttribute('data-theme') === 'light'
-      const line = light ? '18,16,26' : '0,229,255'
-      const dot = light ? '18,16,26' : '0,229,255'
-      const lineA = light ? 0.16 : 0.12
-      const dotBoost = light ? 0.55 : 1
+      const line = '0,200,220'
+      const dot = '255,46,151'
+      const lineA = 0.22
+      const dotBoost = 0.7
       for (let i = 0; i < particles.length; i += 1) {
         for (let j = i + 1; j < particles.length; j += 1) {
           const dx = (particles[i].x - particles[j].x) * width

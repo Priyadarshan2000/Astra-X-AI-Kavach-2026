@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import Navbar from './components/nav/Navbar.jsx'
-import CursorGlow from './components/effects/CursorGlow.jsx'
 import AmbientOrbs from './components/effects/AmbientOrbs.jsx'
 import PageTransition from './components/ui/PageTransition.jsx'
 import Loader from './components/ui/Loader.jsx'
@@ -35,7 +34,7 @@ export default function App() {
 
   useEffect(() => {
     const t = setInterval(() => setProgress((p) => Math.min(100, p + 4)), 110)
-    const done = setTimeout(() => setBoot(false), 8000)
+    const done = setTimeout(() => setBoot(false), 3200)
     return () => {
       clearInterval(t)
       clearTimeout(done)
@@ -47,11 +46,8 @@ export default function App() {
   return (
     <div className="page-shell">
       <AmbientOrbs />
-      <div className="pointer-events-none fixed inset-0 cyber-grid opacity-45" />
-      <div className="scanlines pointer-events-none fixed inset-0 z-30 opacity-40" />
-      <div className="noise pointer-events-none fixed inset-0 z-30" />
+      <div className="pointer-events-none fixed inset-0 cyber-grid" />
       <HudFrame />
-      <CursorGlow />
       <Navbar />
       <Suspense fallback={<Loader progress={64} label="SYNCING TACTICAL VIEW" />}>
         <PageTransition routeKey={location.pathname}>

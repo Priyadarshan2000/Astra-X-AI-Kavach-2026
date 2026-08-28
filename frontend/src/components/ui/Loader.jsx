@@ -60,8 +60,6 @@ export default function Loader({ progress = 0, label = 'ARMING ASTRA-X KERNEL' }
         <span />
       </div>
       <div className="absolute inset-0 cyber-grid opacity-40" />
-      <div className="scanlines absolute inset-0" />
-      <div className="noise absolute inset-0" />
       <div className="boot-orb boot-orb-a" />
       <div className="boot-orb boot-orb-b" />
       <div className="hud-corners" />

@@ -1,23 +1,10 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <script>
-      (function () {
-        try {
-          var t = localStorage.getItem('astra_theme')
-          if (t !== 'light' && t !== 'dark') {
-            t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
-          }
-          document.documentElement.setAttribute('data-theme', t)
-          document.documentElement.style.colorScheme = t
-        } catch (e) {
-          document.documentElement.setAttribute('data-theme', 'dark')
-        }
-      })()
-    </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
     <meta
       name="description"
       content="ASTRA-X — Autonomous Security Tactical Reasoning Agent. Defence-grade AI cybersecurity command platform."

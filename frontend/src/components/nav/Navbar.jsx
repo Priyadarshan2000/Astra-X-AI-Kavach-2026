@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { useMission } from '../../context/MissionContext.jsx'
-import ThemeToggle from '../ui/ThemeToggle.jsx'
 import { loopSteps } from '../../lib/missionLoop.js'
 
 const LINKS = [
@@ -51,7 +50,7 @@ export default function Navbar() {
     <header
       className={`site-nav fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled || !isLanding
-          ? 'border-b-[2.5px] border-cyan bg-void/95'
+          ? 'border-b-[2.5px] border-ink bg-panel/95'
           : 'bg-transparent'
       }`}
     >
@@ -103,7 +102,6 @@ export default function Navbar() {
             <span className="font-display text-[9px] tracking-[0.18em] text-ink">ONLINE</span>
             <span className="font-ui text-[10px] text-ink/70">{time}</span>
           </div>
-          <ThemeToggle />
           <button
             className="rounded-lg border-[2.5px] border-cyan bg-panel p-2 text-cyan shadow-[3px_3px_0_#8b5cff] lg:hidden"
             onClick={() => setOpen((v) => !v)}
