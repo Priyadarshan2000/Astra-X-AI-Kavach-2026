@@ -3,7 +3,9 @@ import { Shield, LogOut, Menu, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/AuthContext.jsx'
+import { useMission } from '../../context/MissionContext.jsx'
 import ThemeToggle from '../ui/ThemeToggle.jsx'
+import { loopSteps } from '../../lib/missionLoop.js'
 
 const LINKS = [
   { to: '/dashboard', label: 'Deck' },
@@ -25,6 +27,8 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [time, setTime] = useState(clock)
   const { isAuthed, logout, user } = useAuth()
+  const { mission } = useMission()
+  const pips = loopSteps(mission)
   const navigate = useNavigate()
   const location = useLocation()
   const isLanding = location.pathname === '/'
@@ -87,6 +91,13 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3">
+          {isAuthed ? (
+            <div className="mission-pips hidden items-center gap-1 xl:flex" title="Mission loop">
+              {pips.map((step) => (
+                <span key={step.key} className={`mission-pip ${step.done ? 'is-done' : ''}`} />
+              ))}
+            </div>
+          ) : null}
           <div className="sticker-yellow hidden items-center gap-2 rounded-lg border-[2.5px] border-ink px-3 py-1 shadow-[3px_3px_0_#ff2e97] xl:flex">
             <span className="live-dot" />
             <span className="font-display text-[9px] tracking-[0.18em] text-ink">ONLINE</span>
@@ -102,7 +113,7 @@ export default function Navbar() {
           </button>
           {isAuthed ? (
             <>
-              <span className="hidden font-ui text-xs text-fog sm:block">{user?.name}</span>
+              <span className="sticker hidden sm:inline-flex">{user?.name || 'Command'}</span>
               <button
                 onClick={() => {
                   logout()

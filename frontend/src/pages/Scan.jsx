@@ -4,6 +4,7 @@ import { Upload, FileCode2, Brain } from 'lucide-react'
 import GlassPanel from '../components/ui/GlassPanel.jsx'
 import NeonButton from '../components/ui/NeonButton.jsx'
 import PageHeader from '../components/ui/PageHeader.jsx'
+import MissionStrip from '../components/ui/MissionStrip.jsx'
 import { languageFromName, SAMPLE_CODE } from '../data/mock.js'
 import { useMission } from '../context/MissionContext.jsx'
 import { api } from '../api/client.js'
@@ -51,6 +52,7 @@ export default function Scan() {
   return (
     <main className="mx-auto max-w-7xl px-5 pb-16 pt-24">
       <PageHeader kicker="Static intelligence" title="SOURCE SCAN" detail="Drop source or load a lab sample. ASTRA maps CWE classes with confidence scoring." />
+      <MissionStrip />
       <div className="grid gap-6 lg:grid-cols-2">
         <GlassPanel className="p-6" hover={false} tone="cyan">
           <div
@@ -109,7 +111,7 @@ export default function Scan() {
               {mission.fileName} · {mission.language}
             </span>
           </div>
-          <pre className="max-h-64 overflow-auto rounded-xl bg-code p-4 text-[12px] leading-6 text-cyan/80">{preview}</pre>
+          <pre className="viz-well !min-h-0 max-h-64 overflow-auto p-4 text-[12px] leading-6 text-cyan/90">{preview}</pre>
           <div className="mt-5">
             <NeonButton onClick={startScan}>{busy ? 'Scanning…' : 'Initiate Scan'}</NeonButton>
           </div>
@@ -139,13 +141,13 @@ export default function Scan() {
         <div className="mt-6 grid gap-3 md:grid-cols-2">
           {findings.map((f, idx) => (
             <GlassPanel key={f.id} className="p-5" tone={['cyan', 'violet', 'magenta', 'yellow'][idx % 4]}>
-              <div className="flex items-center justify-between">
-                <span className="font-display text-xs tracking-widest text-crimson">{f.severity}</span>
-                <span className="text-xs text-violet">{f.cwe}</span>
+              <div className="flex items-center justify-between gap-2">
+                <span className={`sticker sev-${f.severity}`}>{f.severity}</span>
+                <span className="sticker sticker-violet">{f.cwe}</span>
               </div>
-              <h3 className="mt-2 text-lg text-mist">{f.title}</h3>
+              <h3 className="mt-3 text-lg text-mist">{f.title}</h3>
               <p className="mt-1 text-sm text-fog">Line {f.line} · Risk {f.risk} · Confidence {Math.round(f.confidence * 100)}%</p>
-              <p className="mt-3 text-sm text-cyan/80">{f.fix}</p>
+              <p className="mt-3 text-sm text-mist/80">{f.fix}</p>
             </GlassPanel>
           ))}
           <div className="md:col-span-2">

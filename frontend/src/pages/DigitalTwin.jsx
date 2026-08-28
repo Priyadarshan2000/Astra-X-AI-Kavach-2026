@@ -5,6 +5,7 @@ import { Cpu, Radio, Shield, Truck } from 'lucide-react'
 import GlassPanel from '../components/ui/GlassPanel.jsx'
 import NeonButton from '../components/ui/NeonButton.jsx'
 import PageHeader from '../components/ui/PageHeader.jsx'
+import MissionStrip from '../components/ui/MissionStrip.jsx'
 import { DIGITAL_TWINS } from '../data/twins.js'
 import { SAMPLE_CODE } from '../data/mock.js'
 import { useMission } from '../context/MissionContext.jsx'
@@ -20,6 +21,7 @@ export default function DigitalTwin() {
   return (
     <main className="mx-auto max-w-7xl px-5 pb-16 pt-24">
       <PageHeader kicker="Simulation mesh" title="DIGITAL TWINS" detail="Four contested military systems. Select a twin to arm the scan corpus." />
+      <MissionStrip />
       <div className="grid gap-6 md:grid-cols-2">
         {DIGITAL_TWINS.map((twin, i) => {
           const Icon = ICONS[twin.id]

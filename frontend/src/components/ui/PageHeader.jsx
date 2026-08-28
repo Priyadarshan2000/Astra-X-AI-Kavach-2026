@@ -10,7 +10,7 @@ export default function PageHeader({ kicker, title, detail, extra }) {
     >
       <div>
         <p className="hud-label">{kicker}</p>
-        <h1 className="mt-3 font-display text-3xl tracking-[0.14em] text-mist text-glow md:text-4xl">{title}</h1>
+        <h1 className="mt-3 font-display text-3xl tracking-[0.14em] title-pop md:text-4xl">{title}</h1>
         {detail ? <p className="mt-2 max-w-2xl text-sm text-fog">{detail}</p> : null}
       </div>
       {extra}

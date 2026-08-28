@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import GlassPanel from '../components/ui/GlassPanel.jsx'
 import NeonButton from '../components/ui/NeonButton.jsx'
 import PageHeader from '../components/ui/PageHeader.jsx'
+import MissionStrip from '../components/ui/MissionStrip.jsx'
 import CodePane from '../components/code/CodePane.jsx'
 import { useMission } from '../context/MissionContext.jsx'
 import { api } from '../api/client.js'
@@ -42,6 +43,7 @@ export default function Patch() {
   return (
     <main className="mx-auto max-w-7xl px-5 pb-16 pt-24">
       <PageHeader kicker="Defensive rewrite" title="SECURE PATCH" detail="Original corpus on the left. Hardened synthesis on the right." />
+      <MissionStrip />
       <div className="mb-6 flex flex-wrap gap-3">
         <NeonButton onClick={generate}>Synthesize Patch</NeonButton>
         {patch && <NeonButton variant="ghost" onClick={() => navigate('/fuzz')}>Run Fuzz Campaign</NeonButton>}

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import GlassPanel from '../components/ui/GlassPanel.jsx'
 import NeonButton from '../components/ui/NeonButton.jsx'
 import PageHeader from '../components/ui/PageHeader.jsx'
+import MissionStrip from '../components/ui/MissionStrip.jsx'
 import { useMission } from '../context/MissionContext.jsx'
 
 export default function Fuzzing() {
@@ -29,6 +30,7 @@ export default function Fuzzing() {
         title="FUZZ CAMPAIGN"
         detail="Lab-only replay against the original binary and the patched twin. No live targeting."
       />
+      <MissionStrip />
       <div className="mb-6">
         <NeonButton onClick={run}>Engage Simulation</NeonButton>
       </div>
@@ -53,7 +55,7 @@ export default function Fuzzing() {
           <div className="mb-4 h-3 overflow-hidden rounded-md border-[2.5px] border-ink bg-panel shadow-[3px_3px_0_#ff2e97]">
             <div className="h-full bg-crimson" style={{ width: fuzz ? '92%' : '0%' }} />
           </div>
-          <pre className="min-h-48 rounded-xl bg-code p-4 text-[12px] leading-6 text-crimson/90">
+          <pre className="viz-well !min-h-0 min-h-48 p-4 text-[12px] leading-6 text-crimson/90">
             {(fuzz?.logBefore || ['[STANDBY] awaiting corpus']).join('\n')}
             <span className="ml-1 inline-block h-3 w-2 bg-crimson" style={{ animation: 'terminal-blink 1s step-end infinite' }} />
           </pre>
@@ -63,7 +65,7 @@ export default function Fuzzing() {
           <div className="mb-4 h-3 overflow-hidden rounded-md border-[2.5px] border-ink bg-panel shadow-[3px_3px_0_#22d3a6]">
             <div className="h-full bg-emerald" style={{ width: stage === 'after' ? '98%' : '0%' }} />
           </div>
-          <pre className="min-h-48 rounded-xl bg-code p-4 text-[12px] leading-6 text-emerald/90">
+          <pre className="viz-well !min-h-0 min-h-48 p-4 text-[12px] leading-6 text-emerald/90">
             {(stage === 'after' ? fuzz?.logAfter : ['[HOLD] patch not yet certified']).join('\n')}
           </pre>
         </GlassPanel>

@@ -1,9 +1,8 @@
 import { motion } from 'framer-motion'
-import { Check, ChevronRight, Cpu, Shield } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { Shield } from 'lucide-react'
 import GlassPanel from '../components/ui/GlassPanel.jsx'
 import PageHeader from '../components/ui/PageHeader.jsx'
-import NeonButton from '../components/ui/NeonButton.jsx'
+import MissionStrip from '../components/ui/MissionStrip.jsx'
 import ThreatRadar from '../components/effects/ThreatRadar.jsx'
 import AttackMap from '../components/effects/AttackMap.jsx'
 import ConfidenceGauge from '../components/dashboard/ConfidenceGauge.jsx'
@@ -14,30 +13,12 @@ import { useMission } from '../context/MissionContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { ALERTS } from '../data/mock.js'
 
-function nextAction(mission) {
-  if (mission.tests) return { to: '/reports', label: 'Open Report' }
-  if (mission.fuzz) return { to: '/regression', label: 'Run Tests' }
-  if (mission.patch) return { to: '/fuzz', label: 'Fuzz Twin' }
-  if (mission.scan) return { to: '/patch', label: 'Synthesize Patch' }
-  if (mission.twin) return { to: '/scan', label: 'Run Scan' }
-  return { to: '/twin', label: 'Arm Twin' }
-}
-
 export default function Dashboard() {
   const { user } = useAuth()
   const { mission } = useMission()
-  const navigate = useNavigate()
   const score = mission.scan?.score ?? 74
   const twin = mission.twin?.name || 'No twin armed'
   const confidence = mission.patch ? 96 : 91
-  const next = nextAction(mission)
-  const loop = [
-    { key: 'twin', label: 'Twin', to: '/twin', done: Boolean(mission.twin) },
-    { key: 'scan', label: 'Scan', to: '/scan', done: Boolean(mission.scan) },
-    { key: 'patch', label: 'Patch', to: '/patch', done: Boolean(mission.patch) },
-    { key: 'fuzz', label: 'Fuzz', to: '/fuzz', done: Boolean(mission.fuzz) },
-  ]
-  const currentIdx = loop.findIndex((step) => !step.done)
   const operator = user?.name && user.name.toLowerCase() !== 'operator' ? user.name : 'Command'
 
   return (
@@ -66,29 +47,7 @@ export default function Dashboard() {
         }
       />
 
-      <div className="mb-6 flex flex-wrap items-center gap-3">
-        <p className="font-display text-[10px] tracking-[0.2em] text-fog">MISSION LOOP</p>
-        <div className="flex flex-wrap items-center gap-1.5">
-          {loop.map((step, i) => {
-            const state = step.done ? 'is-done' : i === currentIdx ? 'is-now' : 'is-wait'
-            return (
-              <div key={step.key} className="flex items-center gap-1.5">
-                {i > 0 ? <span className="loop-rail" /> : null}
-                <button type="button" className={`loop-step ${state}`} onClick={() => navigate(step.to)}>
-                  {step.done ? <Check className="h-3 w-3" /> : <span className="loop-index">{i + 1}</span>}
-                  {step.label}
-                </button>
-              </div>
-            )
-          })}
-        </div>
-        <NeonButton className="!px-4 !py-2" onClick={() => navigate(next.to)}>
-          <span className="inline-flex items-center gap-2">
-            <Cpu className="h-3.5 w-3.5" /> {next.label}
-            <ChevronRight className="h-3.5 w-3.5" />
-          </span>
-        </NeonButton>
-      </div>
+      <MissionStrip />
 
       <div className="grid gap-6 pb-2 lg:grid-cols-12">
         <GlassPanel className="flex min-h-[340px] flex-col p-5 lg:col-span-4" delay={0.04} tone="cyan">

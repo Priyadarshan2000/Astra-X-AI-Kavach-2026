@@ -6,6 +6,7 @@ import AmbientOrbs from './components/effects/AmbientOrbs.jsx'
 import PageTransition from './components/ui/PageTransition.jsx'
 import Loader from './components/ui/Loader.jsx'
 import HudFrame from './components/ui/HudFrame.jsx'
+import StatusBar from './components/ui/StatusBar.jsx'
 import { useAuth } from './context/AuthContext.jsx'
 import { useEffect, useState } from 'react'
 
@@ -70,6 +71,7 @@ export default function App() {
           </Routes>
         </PageTransition>
       </Suspense>
+      <StatusBar />
     </div>
   )
 }
