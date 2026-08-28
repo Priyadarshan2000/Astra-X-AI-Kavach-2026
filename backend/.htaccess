@@ -1,0 +1,8 @@
+Options -Indexes
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Headers "Authorization, Content-Type"
+Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+
+<FilesMatch "\.(php|sql|env)$">
+  # served as API
+</FilesMatch>

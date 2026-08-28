@@ -1,0 +1,106 @@
+CREATE DATABASE IF NOT EXISTS astra_x
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE astra_x;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(120) NOT NULL,
+  email VARCHAR(190) NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  role VARCHAR(32) NOT NULL DEFAULT 'COMMAND',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_users_email (email)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS projects (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED NOT NULL,
+  name VARCHAR(160) NOT NULL,
+  twin_unit VARCHAR(64) NOT NULL DEFAULT 'UNASSIGNED',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_projects_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  INDEX idx_projects_user (user_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS scans (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  project_id INT UNSIGNED NOT NULL,
+  user_id INT UNSIGNED NOT NULL,
+  file_name VARCHAR(160) NOT NULL,
+  language VARCHAR(32) NOT NULL,
+  source_code MEDIUMTEXT NOT NULL,
+  findings_json JSON NOT NULL,
+  risk_score TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_scans_project FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
+  CONSTRAINT fk_scans_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  INDEX idx_scans_project (project_id),
+  INDEX idx_scans_language (language)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS patches (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  scan_id INT UNSIGNED NULL,
+  project_id INT UNSIGNED NOT NULL,
+  user_id INT UNSIGNED NOT NULL,
+  original_code MEDIUMTEXT NOT NULL,
+  patched_code MEDIUMTEXT NOT NULL,
+  notes_json JSON NOT NULL,
+  confidence DECIMAL(5,4) NOT NULL DEFAULT 0.0000,
+  risk_reduction TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_patches_scan FOREIGN KEY (scan_id) REFERENCES scans (id) ON DELETE SET NULL,
+  CONSTRAINT fk_patches_project FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
+  CONSTRAINT fk_patches_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  INDEX idx_patches_project (project_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS fuzz_results (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  project_id INT UNSIGNED NOT NULL,
+  patch_id INT UNSIGNED NULL,
+  user_id INT UNSIGNED NOT NULL,
+  attacks INT UNSIGNED NOT NULL DEFAULT 0,
+  rps INT UNSIGNED NOT NULL DEFAULT 0,
+  crashes_before INT UNSIGNED NOT NULL DEFAULT 0,
+  crashes_after INT UNSIGNED NOT NULL DEFAULT 0,
+  defence_after TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  log_json JSON NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_fuzz_project FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
+  CONSTRAINT fk_fuzz_patch FOREIGN KEY (patch_id) REFERENCES patches (id) ON DELETE SET NULL,
+  CONSTRAINT fk_fuzz_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  INDEX idx_fuzz_project (project_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS regression_tests (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  project_id INT UNSIGNED NOT NULL,
+  user_id INT UNSIGNED NOT NULL,
+  suite VARCHAR(64) NOT NULL,
+  detail VARCHAR(255) NOT NULL,
+  status ENUM('pending', 'pass', 'fail') NOT NULL DEFAULT 'pending',
+  latency_ms INT UNSIGNED NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_reg_project FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
+  CONSTRAINT fk_reg_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  INDEX idx_reg_project (project_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS reports (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  project_id INT UNSIGNED NOT NULL,
+  user_id INT UNSIGNED NOT NULL,
+  classification VARCHAR(80) NOT NULL DEFAULT 'RESTRICTED // ASTRA-X',
+  executive_summary TEXT NOT NULL,
+  risk_score TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  body_json JSON NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_reports_project FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE,
+  CONSTRAINT fk_reports_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  INDEX idx_reports_user (user_id),
+  INDEX idx_reports_created (created_at)
+) ENGINE=InnoDB;
