@@ -1,5 +1,6 @@
 import GlassPanel from '../components/ui/GlassPanel.jsx'
 import PageHeader from '../components/ui/PageHeader.jsx'
+import MissionStrip from '../components/ui/MissionStrip.jsx'
 import { useMission } from '../context/MissionContext.jsx'
 import { buildReport } from '../data/mock.js'
 
@@ -17,7 +18,8 @@ export default function Reports() {
 
   return (
     <main className="mx-auto max-w-4xl px-5 pb-16 pt-24">
-      <PageHeader kicker="After-action" title="MISSION REPORT" />
+      <PageHeader kicker="After-action" title="MISSION REPORT" detail="Classified dossier of scan, patch, fuzz and certification." />
+      <MissionStrip />
       <GlassPanel className="p-0" hover={false} tone="cyan">
         <div className="border-b-[2.5px] border-cyan bg-magenta px-8 py-6">
           <p className="sticker sticker-yellow">{report.classification}</p>

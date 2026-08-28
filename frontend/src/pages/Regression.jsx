@@ -4,6 +4,7 @@ import { CheckCircle2, CircleDashed } from 'lucide-react'
 import GlassPanel from '../components/ui/GlassPanel.jsx'
 import NeonButton from '../components/ui/NeonButton.jsx'
 import PageHeader from '../components/ui/PageHeader.jsx'
+import MissionStrip from '../components/ui/MissionStrip.jsx'
 import { simulateRegression } from '../data/mock.js'
 import { useMission } from '../context/MissionContext.jsx'
 
@@ -28,6 +29,7 @@ export default function Regression() {
   return (
     <main className="mx-auto max-w-7xl px-5 pb-16 pt-24">
       <PageHeader kicker="Certification suite" title="REGRESSION LOCK" detail="Five tactical suites. Each animates from pending to pass." />
+      <MissionStrip />
       <div className="mb-6">
         <NeonButton onClick={run}>Execute Tests</NeonButton>
       </div>

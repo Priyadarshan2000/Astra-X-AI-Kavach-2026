@@ -1,10 +1,12 @@
 import GlassPanel from '../components/ui/GlassPanel.jsx'
 import PageHeader from '../components/ui/PageHeader.jsx'
+import MissionStrip from '../components/ui/MissionStrip.jsx'
 
 export default function About() {
   return (
     <main className="mx-auto max-w-4xl px-5 pb-16 pt-24">
-      <PageHeader kicker="Doctrine" title="ABOUT ASTRA-X" />
+      <PageHeader kicker="Doctrine" title="ABOUT ASTRA-X" detail="Defence-grade copilot for Kavach 2026. Scan. Patch. Certify. Never weaponize." />
+      <MissionStrip />
       <GlassPanel className="p-8" hover={false} tone="magenta">
         <p className="text-lg text-fog">
           ASTRA-X (Autonomous Security Tactical Reasoning Agent) is a defence-tech command platform designed for Kavach
