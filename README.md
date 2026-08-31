@@ -16,7 +16,15 @@
 
 **Scan · Patch · Certify · Never weaponize**
 
-[🚀 Live Demo](https://astra-x-ai-kavach-2026.vercel.app/) · [⚡ API Portal](https://tan-hummingbird-842514.hostingersite.com/) · [GitHub](https://github.com/Priyadarshan2000/Astra-X-AI-Kavach-2026) · [5-Min Walkthrough](#-reviewer--interviewer-walkthrough-5-min) · [Interview Q&A](#-interview-talking-points)
+[🚀 Live Demo](https://astra-x-ai-kavach-2026.vercel.app/) · [⚡ API Portal](https://tan-hummingbird-842514.hostingersite.com/) · [GitHub](https://github.com/Priyadarshan2000/Astra-X-AI-Kavach-2026) · [Screenshots](#-screenshots--ui-tour) · [5-Min Walkthrough](#-reviewer--interviewer-walkthrough-5-min) · [Interview Q&A](#-interview-talking-points)
+
+<br/>
+
+<p align="center">
+  <img src="docs/screenshots/01-landing-hero.png" alt="ASTRA-X landing page — Bharat defence mesh with India command nodes" width="920" />
+  <br/>
+  <em>Landing command brief — India mesh map, theatre nodes, mission CTAs</em>
+</p>
 
 <br/>
 
@@ -33,6 +41,7 @@
 ## 📑 Table of Contents
 
 - [Executive Summary](#-executive-summary)
+- [Screenshots & UI Tour](#-screenshots--ui-tour)
 - [The Problem We Solve](#-the-problem-we-solve)
 - [Why ASTRA-X Stands Out](#-why-astra-x-stands-out)
 - [Live Deployments](#-live-deployments)
@@ -70,6 +79,98 @@ This is not a mock UI or slide deck. It is a **live, end-to-end system**:
 **One-liner for evaluators:**
 
 > *ASTRA-X takes mission software from digital twin → CWE scan → AI-guided secure patch → lab fuzz → regression certification — with live JWT auth, MySQL persistence, and a tactical agent that reads real mission state.*
+
+---
+
+## 📸 Screenshots & UI Tour
+
+> **Visual proof for interviewers** — every screen below is from the live build. Click through at [astra-x-ai-kavach-2026.vercel.app](https://astra-x-ai-kavach-2026.vercel.app/).
+
+### Command Deck (Frontend)
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+**Landing · Mission Brief**
+
+Cinematic hero, India defence mesh, live theatre nodes, and four CTAs — Live Demo, GitHub, Watch Demo, Incident Sim.
+
+<p align="center"><img src="docs/screenshots/01-landing-hero.png" alt="Landing page" width="440"/></p>
+
+</td>
+<td width="50%" valign="top">
+
+**Judge Mode · Evaluator Checklist**
+
+Built for Kavach reviewers — comparison matrix, architecture layers, vuln cards, and interactive evaluation checklist.
+
+<p align="center"><img src="docs/screenshots/02-judge-mode.png" alt="Judge mode" width="440"/></p>
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+**Operator Login · JWT Auth**
+
+Army Cyber Command clearance gate. Pre-filled demo credentials. Falls back to offline session if API is unreachable.
+
+<p align="center"><img src="docs/screenshots/03-operator-login.png" alt="Operator login" width="440"/></p>
+
+</td>
+<td width="50%" valign="top">
+
+**Command Deck · SOC Dashboard**
+
+Live threat picture, AI confidence gauge, mission timeline, and highlighted next action in the mission loop.
+
+<p align="center"><img src="docs/screenshots/04-command-deck.png" alt="Command deck dashboard" width="440"/></p>
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+**Static Scan · CWE Intelligence**
+
+Upload source or load lab sample. ASTRA maps CWE classes with line numbers, risk scores, and confidence.
+
+<p align="center"><img src="docs/screenshots/05-static-scan.png" alt="Static CWE scan" width="440"/></p>
+
+</td>
+<td width="50%" valign="top">
+
+**Secure Patch · Defensive Rewrite**
+
+Split-screen before/after synthesis. Mission loop progress bar tracks twin → scan → patch → fuzz → certify.
+
+<p align="center"><img src="docs/screenshots/06-secure-patch.png" alt="Secure patch view" width="440"/></p>
+
+</td>
+</tr>
+</table>
+
+### Backend API Portal
+
+Light-theme API documentation served at the Hostinger root — live health status, endpoint cards, demo credentials, and curl smoke test.
+
+<p align="center">
+  <img src="docs/screenshots/07-api-portal.png" alt="ASTRA-X API Portal on Hostinger" width="920"/>
+  <br/>
+  <em>Self-hosted API portal · <a href="https://tan-hummingbird-842514.hostingersite.com/">tan-hummingbird-842514.hostingersite.com</a></em>
+</p>
+
+### Quick demo script (show these in order)
+
+| # | Screen | Route | What to say |
+| --- | --- | --- | --- |
+| 1 | Landing + Incident Sim | `/` | *"30-second cyberattack simulation — detect, patch, restore"* |
+| 2 | Login | `/login` | *"Real JWT auth against live MySQL backend"* |
+| 3 | Scan sample | `/scan` | *"Load api_gateway.js — four CWE findings in one click"* |
+| 4 | Patch analysis | `/patch` | *"ASTRA-X explains every rewrite with reviewer tips"* |
+| 5 | Judge mode | `/judge` | *"Evaluator checklist — built for Kavach scoring"* |
+| 6 | API portal | [live API](https://tan-hummingbird-842514.hostingersite.com/) | *"Full REST API — Postman + curl proof chain"* |
 
 ---
 
@@ -658,6 +759,7 @@ astra-x-ai-kavach-2026/
 │   ├── views/                     # api-portal.php (light-theme docs)
 │   └── config/                    # database, secrets (gitignored)
 ├── database/                      # schema.sql, schema-hostinger.sql, seed.php
+├── docs/screenshots/              # README UI tour (7 captures)
 ├── postman/                       # Collection + live environment
 ├── scripts/                       # package-hostinger.sh, api-smoke-test.sh
 ├── CONTRIBUTING.md
