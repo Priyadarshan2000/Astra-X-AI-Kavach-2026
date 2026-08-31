@@ -21,6 +21,10 @@ const Fuzzing = lazy(() => import('./pages/Fuzzing.jsx'))
 const Regression = lazy(() => import('./pages/Regression.jsx'))
 const Reports = lazy(() => import('./pages/Reports.jsx'))
 const About = lazy(() => import('./pages/About.jsx'))
+const Evidence = lazy(() => import('./pages/Evidence.jsx'))
+const Judge = lazy(() => import('./pages/Judge.jsx'))
+const DemoVideo = lazy(() => import('./pages/DemoVideo.jsx'))
+const TwinSimulation = lazy(() => import('./pages/TwinSimulation.jsx'))
 
 function Guard({ children }) {
   const { isAuthed } = useAuth()
@@ -64,6 +68,10 @@ export default function App() {
             <Route path="/regression" element={<Guard><Regression /></Guard>} />
             <Route path="/reports" element={<Guard><Reports /></Guard>} />
             <Route path="/about" element={<About />} />
+            <Route path="/evidence" element={<Guard><Evidence /></Guard>} />
+            <Route path="/judge" element={<Judge />} />
+            <Route path="/demo" element={<DemoVideo />} />
+            <Route path="/simulation" element={<TwinSimulation />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </PageTransition>

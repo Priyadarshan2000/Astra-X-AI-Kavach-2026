@@ -8,12 +8,15 @@ import { loopSteps } from '../../lib/missionLoop.js'
 
 const LINKS = [
   { to: '/dashboard', label: 'Deck' },
+  { to: '/evidence', label: 'Evidence' },
   { to: '/scan', label: 'Scan' },
   { to: '/twin', label: 'Twin' },
+  { to: '/simulation', label: 'Sim' },
   { to: '/patch', label: 'Patch' },
   { to: '/fuzz', label: 'Fuzz' },
   { to: '/regression', label: 'Tests' },
   { to: '/reports', label: 'Reports' },
+  { to: '/judge', label: 'Judge' },
   { to: '/about', label: 'About' },
 ]
 

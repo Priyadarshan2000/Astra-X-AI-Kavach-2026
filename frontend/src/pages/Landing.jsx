@@ -15,6 +15,9 @@ import {
   Fingerprint,
   MapPin,
   Shield,
+  Code2,
+  Play,
+  AlertOctagon,
 } from 'lucide-react'
 import ParticleField from '../components/effects/ParticleField.jsx'
 import IndiaMap from '../components/effects/IndiaMap.jsx'
@@ -23,6 +26,10 @@ import HexRings from '../components/effects/HexRings.jsx'
 import NeonButton from '../components/ui/NeonButton.jsx'
 import StatCounter from '../components/ui/StatCounter.jsx'
 import SimCinematic from '../components/ui/SimCinematic.jsx'
+import TerminalTyping from '../components/ui/TerminalTyping.jsx'
+import LiveDemoPanel from '../components/demo/LiveDemoPanel.jsx'
+import IncidentSimulation from '../components/demo/IncidentSimulation.jsx'
+import ArchitectureViz from '../components/architecture/ArchitectureViz.jsx'
 import { PLATFORM_STATS } from '../data/mock.js'
 import { ARMY_TICKER, COMMAND_THEATRES, HERO_BADGES } from '../data/landing.js'
 import { useAuth } from '../context/AuthContext.jsx'
@@ -30,6 +37,15 @@ import { useAuth } from '../context/AuthContext.jsx'
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
 const Shield3D = lazy(() => import('../components/effects/Shield3D.jsx'))
+
+const GITHUB = 'https://github.com/Priyadarshan2000/Astra-X-AI-Kavach-2026'
+
+const TERMINAL_LINES = [
+  'astra-x kernel online — defensive hold engaged',
+  'bharat mesh sync: 8/8 theatre nodes responding',
+  'cwe corpus loaded — scan · patch · fuzz · certify',
+  'awaiting operator clearance — kavach 2026',
+]
 
 const STAT_TONES = ['pop-cyan', 'pop-violet', 'pop-magenta', 'pop-yellow']
 const LOOP_TONES = ['pop-cyan', 'pop-violet', 'pop-magenta', 'pop-yellow']
@@ -92,7 +108,9 @@ export default function Landing() {
   const navigate = useNavigate()
   const { isAuthed } = useAuth()
   const [sim, setSim] = useState(false)
+  const [incident, setIncident] = useState(false)
   const [meshProgress, setMeshProgress] = useState(62)
+  const [liveStats, setLiveStats] = useState(PLATFORM_STATS.map((s) => s.value))
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -100,6 +118,13 @@ export default function Landing() {
         const next = p + (Math.random() > 0.5 ? 4 : -2)
         return Math.max(48, Math.min(96, next))
       })
+      setLiveStats((stats) =>
+        stats.map((v, i) => {
+          const base = PLATFORM_STATS[i].value
+          const jitter = i === 3 ? 0.1 : Math.floor(Math.random() * 3)
+          return Math.min(base + 120, v + jitter)
+        }),
+      )
     }, 2200)
     return () => clearInterval(id)
   }, [])
@@ -250,13 +275,27 @@ export default function Landing() {
                   </span>
                 ))}
               </div>
-              <div className="mt-8 flex flex-wrap justify-center gap-4 lg:justify-start">
+              <div className="mt-5 hidden max-w-md lg:block">
+                <TerminalTyping lines={TERMINAL_LINES} />
+              </div>
+
+              <div className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
                 <div className="hero-cta cta-halo">
-                  <NeonButton onClick={launch}>Enter Command Deck</NeonButton>
+                  <NeonButton onClick={launch}>Live Demo</NeonButton>
+                </div>
+                <div className="hero-cta">
+                  <NeonButton variant="ghost" onClick={() => window.open(GITHUB, '_blank', 'noopener')}>
+                    <Code2 className="mr-1 inline h-4 w-4" /> GitHub
+                  </NeonButton>
                 </div>
                 <div className="hero-cta">
                   <NeonButton variant="ghost" onClick={() => setSim(true)}>
-                    Run Mission Briefing
+                    <Play className="mr-1 inline h-4 w-4" /> Watch Demo
+                  </NeonButton>
+                </div>
+                <div className="hero-cta">
+                  <NeonButton variant="ghost" onClick={() => setIncident(true)}>
+                    <AlertOctagon className="mr-1 inline h-4 w-4" /> Incident Sim
                   </NeonButton>
                 </div>
               </div>
@@ -298,7 +337,7 @@ export default function Landing() {
             {PLATFORM_STATS.map((stat, i) => (
               <div key={stat.id} className={`hero-stat glass ${STAT_TONES[i]} widget-ticks can-lift rounded-2xl px-3 py-4`}>
                 <p className="font-display text-2xl text-mist sm:text-3xl">
-                  <StatCounter value={stat.value} suffix={stat.suffix} />
+                  <StatCounter value={liveStats[i] || stat.value} suffix={stat.suffix} />
                 </p>
                 <p className="mt-1 text-[10px] uppercase tracking-widest text-fog">{stat.label}</p>
               </div>
@@ -451,6 +490,19 @@ export default function Landing() {
           </div>
         </div>
 
+        <div className="mt-20">
+          <LiveDemoPanel onLaunchFull={launch} />
+        </div>
+
+        <div className="mt-20">
+          <p className="hud-label">Platform architecture</p>
+          <h2 className="mt-3 font-display text-2xl tracking-[0.2em] text-mist text-glow">DEFENCE STACK LAYERS</h2>
+          <p className="mt-3 max-w-2xl text-sm text-fog">Hover each layer to see how ASTRA-X processes field software from ingest to certified deployment.</p>
+          <div className="mt-8">
+            <ArchitectureViz />
+          </div>
+        </div>
+
         <div className="cta-band mt-12 flex flex-col items-start justify-between gap-6 rounded-2xl p-6 md:flex-row md:items-center">
           <div>
             <p className="font-display text-[10px] tracking-[0.22em] uppercase">Kavach 2026 clearance</p>
@@ -462,6 +514,9 @@ export default function Landing() {
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
+            <NeonButton onClick={() => navigate('/judge')} variant="ghost">
+              Judge Mode
+            </NeonButton>
             <NeonButton onClick={() => setSim(true)} variant="ghost">
               Mission Briefing
             </NeonButton>
@@ -471,6 +526,11 @@ export default function Landing() {
       </section>
 
       <AnimatePresence>{sim && <SimCinematic onClose={() => setSim(false)} onLaunch={launch} />}</AnimatePresence>
+      <IncidentSimulation
+        open={incident}
+        onClose={() => setIncident(false)}
+        onComplete={() => navigate(isAuthed ? '/reports' : '/login')}
+      />
     </main>
   )
 }

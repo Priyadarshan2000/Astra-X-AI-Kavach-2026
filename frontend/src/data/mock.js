@@ -1,7 +1,7 @@
 export const PLATFORM_STATS = [
   { id: 'threats', label: 'Threats Detected', value: 18472, suffix: '' },
-  { id: 'patched', label: 'Vulnerabilities Patched', value: 9631, suffix: '' },
-  { id: 'systems', label: 'Secure Systems', value: 412, suffix: '' },
+  { id: 'patched', label: 'Auto Patches', value: 9631, suffix: '' },
+  { id: 'systems', label: 'Tests Passed', value: 8940, suffix: '' },
   { id: 'confidence', label: 'AI Confidence', value: 98.4, suffix: '%' },
 ]
 

@@ -297,6 +297,12 @@ Landing → Login → Digital Twin → Scan → Patch → Fuzz → Regression �
 | **7. Lab fuzz** | `/fuzz` | Before vs after attack-surface simulation in sandbox |
 | **8. Regression** | `/regression` | Five tactical test suites lock green |
 | **9. After-action** | `/reports` | Restricted mission dossier with certificate ID |
+| **Judge mode** | `/judge` | Evaluator checklist, comparison matrix, architecture, vuln cards |
+| **Evidence SOC** | `/evidence` | MITRE/OWASP mapping, severity charts, attack timeline |
+| **Twin simulation** | `/simulation` | Defence network topology — click nodes for AI reasoning |
+| **Demo script** | `/demo` | 90-second walkthrough timeline + narrator script |
+
+**Emergency incident:** On landing, click **Incident Sim** for a 30-second cyberattack → detect → patch → restore animation.
 
 **Bonus:** Open the **ASTRA-X agent chat** (bottom-right) and ask *"Mission status"*, *"What is next?"*, or *"Kavach 2026 brief"* — live tactical inference reads your mission context.
 
