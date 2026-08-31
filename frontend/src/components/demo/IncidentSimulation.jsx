@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, AlertOctagon, ShieldCheck, FileCheck } from 'lucide-react'
 import NeonButton from '../ui/NeonButton.jsx'
+
+const LOG_COLOR = {
+  magenta: 'text-magenta',
+  amber: 'text-amber',
+  violet: 'text-violet',
+  cyan: 'text-cyan',
+}
 
 const STEPS = [
   { t: 0, log: '[INCIDENT] SIG-7 breach attempt — Western Command relay compromised', tone: 'magenta' },
@@ -39,14 +47,14 @@ export default function IncidentSimulation({ open, onClose, onComplete }) {
     if (elapsed >= 20) setDone(true)
   }, [elapsed, open])
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[60] grid place-items-center bg-void/92 p-4"
+          className="fixed inset-0 z-[70] grid place-items-center bg-void/92 p-4"
           onClick={onClose}
         >
           <motion.div
@@ -111,6 +119,7 @@ export default function IncidentSimulation({ open, onClose, onComplete }) {
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   )
 }
