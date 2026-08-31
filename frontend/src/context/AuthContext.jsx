@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, useState } from 'react'
-import { api } from '../api/client.js'
+import { api, isOfflineFallback } from '../api/client.js'
 
 const AuthContext = createContext(null)
 
@@ -12,11 +12,13 @@ export function AuthProvider({ children }) {
     }
   })
   const [token, setToken] = useState(() => localStorage.getItem('astra_token') || '')
+  const [demoMode, setDemoMode] = useState(() => localStorage.getItem('astra_token') === 'demo-jwt-token')
   const [loading, setLoading] = useState(false)
 
-  const persist = (nextUser, nextToken) => {
+  const persist = (nextUser, nextToken, demo = false) => {
     setUser(nextUser)
     setToken(nextToken)
+    setDemoMode(demo)
     if (nextUser && nextToken) {
       localStorage.setItem('astra_user', JSON.stringify(nextUser))
       localStorage.setItem('astra_token', nextToken)
@@ -30,12 +32,13 @@ export function AuthProvider({ children }) {
     setLoading(true)
     try {
       const data = await api.login({ email, password })
-      persist(data.user, data.token)
+      persist(data.user, data.token, false)
       return data
     } catch (error) {
       if (error.status === 401) throw error
+      if (!isOfflineFallback(error)) throw error
       const demoUser = { id: 1, name: email.split('@')[0] || 'Operator', email, role: 'COMMAND' }
-      persist(demoUser, 'demo-jwt-token')
+      persist(demoUser, 'demo-jwt-token', true)
       return { user: demoUser, token: 'demo-jwt-token', demo: true }
     } finally {
       setLoading(false)
@@ -46,23 +49,24 @@ export function AuthProvider({ children }) {
     setLoading(true)
     try {
       const data = await api.register({ name, email, password })
-      persist(data.user, data.token)
+      persist(data.user, data.token, false)
       return data
     } catch (error) {
       if (error.status === 409) throw error
+      if (!isOfflineFallback(error)) throw error
       const demoUser = { id: 1, name, email, role: 'COMMAND' }
-      persist(demoUser, 'demo-jwt-token')
+      persist(demoUser, 'demo-jwt-token', true)
       return { user: demoUser, token: 'demo-jwt-token', demo: true }
     } finally {
       setLoading(false)
     }
   }
 
-  const logout = () => persist(null, '')
+  const logout = () => persist(null, '', false)
 
   const value = useMemo(
-    () => ({ user, token, loading, login, register, logout, isAuthed: Boolean(user && token) }),
-    [user, token, loading],
+    () => ({ user, token, loading, demoMode, login, register, logout, isAuthed: Boolean(user && token) }),
+    [user, token, loading, demoMode],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext.jsx'
+import { useApi } from '../../context/ApiContext.jsx'
 import { useMission } from '../../context/MissionContext.jsx'
 import { nextAction } from '../../lib/missionLoop.js'
 
@@ -13,9 +14,19 @@ const TICK = [
 
 export default function StatusBar() {
   const { pathname } = useLocation()
-  const { isAuthed } = useAuth()
+  const { isAuthed, demoMode } = useAuth()
+  const { status, isOnline } = useApi()
   const { mission } = useMission()
   if (pathname === '/') return null
+
+  const uplink =
+    status === 'checking'
+      ? 'Uplink sync'
+      : isOnline && !demoMode
+        ? 'API linked'
+        : demoMode
+          ? 'Demo mode'
+          : 'API offline'
 
   const next = nextAction(mission)
   const twin = mission.twin?.name || 'No twin'
@@ -25,6 +36,7 @@ export default function StatusBar() {
     <div className="status-bar">
       <span className="live-dot shrink-0" />
       <span className="hidden shrink-0 sm:inline">{isAuthed ? 'Command online' : 'Clearance required'}</span>
+      <span className={`hidden shrink-0 md:inline ${isOnline && !demoMode ? 'text-cyan' : 'text-fog'}`}>{uplink}</span>
       <div className="status-bar-tick">
         <div className="flex w-max gap-10">
           {[...TICK, ...TICK].map((item, i) => (

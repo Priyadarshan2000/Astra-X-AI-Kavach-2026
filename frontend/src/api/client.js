@@ -1,5 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/api'
-const TIMEOUT_MS = 2500
+const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '')
+const TIMEOUT_MS = 8000
 
 async function request(path, { method = 'GET', body, token, isForm, timeoutMs } = {}) {
   const headers = {}
@@ -44,7 +44,21 @@ async function request(path, { method = 'GET', body, token, isForm, timeoutMs } 
   }
 }
 
+export function getApiBase() {
+  return API_BASE
+}
+
+export function isOfflineFallback(error) {
+  return error instanceof TypeError || error.status === 503 || error.status === 404
+}
+
+/** @deprecated use isOfflineFallback */
+export function isApiReachableError(error) {
+  return isOfflineFallback(error)
+}
+
 export const api = {
+  health: () => request('/health.php', { timeoutMs: 10000 }),
   register: (payload) => request('/register.php', { method: 'POST', body: payload }),
   login: (payload) => request('/login.php', { method: 'POST', body: payload }),
   upload: (form, token) => request('/upload.php', { method: 'POST', body: form, token, isForm: true }),
@@ -54,8 +68,4 @@ export const api = {
   regression: (payload, token) => request('/regression.php', { method: 'POST', body: payload, token }),
   reports: (token) => request('/reports.php', { token }),
   chat: (payload) => request('/chat.php', { method: 'POST', body: payload, timeoutMs: 15000 }),
-}
-
-export function isApiReachableError(error) {
-  return error instanceof TypeError || error.status === 404 || error.status >= 500
 }
