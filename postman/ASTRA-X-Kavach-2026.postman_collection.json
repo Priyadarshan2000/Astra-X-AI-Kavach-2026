@@ -1,0 +1,218 @@
+{
+  "info": {
+    "name": "ASTRA-X Kavach 2026 API",
+    "description": "Full-stack REST API for ASTRA-X — Indian Army cyber demonstration.\n\n**Live base URL:** https://tan-hummingbird-842514.hostingersite.com\n\n**Demo credentials:**\n- Email: operator@astra.mil\n- Password: AstraX#2026\n\n**Quick start:**\n1. Import this collection + environment\n2. Run `01 Health Check`\n3. Run `02 Login` (auto-saves JWT to `token` variable)\n4. Run mission endpoints 03–09 in order",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://tan-hummingbird-842514.hostingersite.com" },
+    { "key": "token", "value": "" },
+    { "key": "projectId", "value": "1" },
+    { "key": "scanId", "value": "1" },
+    { "key": "patchId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "00 Public — No Auth",
+      "item": [
+        {
+          "name": "01 Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/health.php",
+            "description": "Verify API + MySQL readiness. Expect `\"status\": \"ready\"`."
+          }
+        },
+        {
+          "name": "02 API Index",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/index.php",
+            "description": "Lists all available endpoints."
+          }
+        },
+        {
+          "name": "03 Login (Demo Operator)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('Login OK', () => pm.expect(json.ok).to.eql(true));",
+                  "if (json.token) {",
+                  "  pm.collectionVariables.set('token', json.token);",
+                  "  pm.environment.set('token', json.token);",
+                  "  console.log('JWT saved to token variable');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"operator@astra.mil\",\n  \"password\": \"AstraX#2026\"\n}"
+            },
+            "url": "{{baseUrl}}/login.php",
+            "description": "Issues JWT for demo operator. Token auto-saved for subsequent requests."
+          }
+        },
+        {
+          "name": "04 Register Operator",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Reviewer\",\n  \"email\": \"reviewer@astra.mil\",\n  \"password\": \"AstraX#2026\"\n}"
+            },
+            "url": "{{baseUrl}}/register.php",
+            "description": "Register a new operator (409 if email exists)."
+          }
+        },
+        {
+          "name": "05 ASTRA-X Agent Chat",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Kavach 2026 mission brief\",\n  \"context\": {\n    \"isAuthed\": true,\n    \"pathname\": \"/dashboard\",\n    \"mission\": {\n      \"twin\": { \"name\": \"Secure Communication\" },\n      \"scan\": { \"score\": 42, \"findings\": 4 }\n    }\n  }\n}"
+            },
+            "url": "{{baseUrl}}/chat.php",
+            "description": "Live ASTRA-X tactical agent — mission-aware replies."
+          }
+        },
+        {
+          "name": "06 Patch Analysis (Explain)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"language\": \"javascript\",\n  \"original\": \"function load(raw){ return eval('('+raw+')'); }\\nfunction render(u){ document.getElementById('x').innerHTML=u; }\",\n  \"patched\": \"function load(raw){ return JSON.parse(raw); }\\nfunction render(u){ document.getElementById('x').textContent=u; }\",\n  \"notes\": [\"Removed eval; switched to JSON.parse.\", \"Replaced innerHTML with textContent.\"],\n  \"findings\": [\n    { \"title\": \"Dynamic code execution\", \"cwe\": \"CWE-95\", \"severity\": \"critical\" },\n    { \"title\": \"DOM XSS via innerHTML\", \"cwe\": \"CWE-79\", \"severity\": \"high\" }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/explain.php",
+            "description": "ASTRA-X patch analysis — CWE cards, severity, reviewer tips."
+          }
+        }
+      ]
+    },
+    {
+      "name": "01 Mission Loop — JWT Required",
+      "item": [
+        {
+          "name": "07 Static Scan (JavaScript)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.projectId) pm.collectionVariables.set('projectId', String(json.projectId));",
+                  "if (json.scanId) pm.collectionVariables.set('scanId', String(json.scanId));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fileName\": \"api_gateway.js\",\n  \"language\": \"javascript\",\n  \"code\": \"const { exec } = require('child_process');\\nfunction render(u){ document.getElementById('b').innerHTML=u; document.write(u); }\\nfunction run(h){ exec('ping -c 1 '+h); }\\nfunction load(r){ return eval('('+r+')'); }\\nasync function q(db,id){ return db.query(`SELECT * FROM ops WHERE id=${id}`); }\"\n}"
+            },
+            "url": "{{baseUrl}}/scan.php",
+            "description": "CWE static analysis — maps eval, innerHTML, exec, SQLi patterns."
+          }
+        },
+        {
+          "name": "08 Secure Patch + ASTRA Analysis",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.patchId) pm.collectionVariables.set('patchId', String(json.patchId));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"language\": \"javascript\",\n  \"project_id\": {{projectId}},\n  \"scan_id\": {{scanId}},\n  \"findings\": [\n    { \"title\": \"Dynamic code execution\", \"cwe\": \"CWE-95\", \"severity\": \"critical\" },\n    { \"title\": \"DOM XSS via innerHTML\", \"cwe\": \"CWE-79\", \"severity\": \"high\" },\n    { \"title\": \"Shell command injection\", \"cwe\": \"CWE-78\", \"severity\": \"critical\" }\n  ],\n  \"code\": \"const { exec } = require('child_process');\\nfunction render(u){ document.getElementById('b').innerHTML=u; }\\nfunction run(h){ exec('ping -c 1 '+h); }\\nfunction load(r){ return eval('('+r+')'); }\"\n}"
+            },
+            "url": "{{baseUrl}}/patch.php",
+            "description": "Bounded secure rewrite + AI explanation payload."
+          }
+        },
+        {
+          "name": "09 Lab Fuzz Simulation",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_id\": {{projectId}},\n  \"patch_id\": {{patchId}},\n  \"findings\": [\n    { \"title\": \"Dynamic code execution\", \"cwe\": \"CWE-95\" },\n    { \"title\": \"DOM XSS\", \"cwe\": \"CWE-79\" }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/fuzz.php",
+            "description": "Before/after attack-surface simulation in lab sandbox."
+          }
+        },
+        {
+          "name": "10 Regression Certification",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_id\": {{projectId}}\n}"
+            },
+            "url": "{{baseUrl}}/regression.php",
+            "description": "Five tactical test suites — all pass."
+          }
+        },
+        {
+          "name": "11 Get Mission Reports",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/reports.php",
+            "description": "List after-action dossiers for authenticated operator."
+          }
+        },
+        {
+          "name": "12 Create Mission Report",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_id\": {{projectId}},\n  \"riskScore\": 88,\n  \"executive\": \"ASTRA-X completed defensive assessment. Critical CWE classes closed via bounded rewrite. Lab fuzz rejected all attack variants. Mission certified for Kavach 2026 review.\"\n}"
+            },
+            "url": "{{baseUrl}}/reports.php",
+            "description": "Persist restricted after-action dossier."
+          }
+        }
+      ]
+    }
+  ]
+}

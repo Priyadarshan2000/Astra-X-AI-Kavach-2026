@@ -12,6 +12,7 @@ json_ok([
         'POST upload.php' => 'Source file ingest (JWT)',
         'POST scan.php' => 'Static CWE analysis (JWT)',
         'POST patch.php' => 'Secure rewrite (JWT)',
+    'POST explain.php' => 'ASTRA-X patch analysis',
         'POST fuzz.php' => 'Lab fuzz simulation (JWT)',
         'POST regression.php' => 'Tactical test suites (JWT)',
         'GET reports.php' => 'After-action dossier (JWT)',

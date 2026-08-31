@@ -1,10 +1,12 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import GlassPanel from '../components/ui/GlassPanel.jsx'
 import NeonButton from '../components/ui/NeonButton.jsx'
 import PageHeader from '../components/ui/PageHeader.jsx'
 import MissionStrip from '../components/ui/MissionStrip.jsx'
 import CodePane from '../components/code/CodePane.jsx'
+import PatchExplanation from '../components/patch/PatchExplanation.jsx'
+import { generatePatch } from '../data/mock.js'
 import { useMission } from '../context/MissionContext.jsx'
 import { api } from '../api/client.js'
 import { useAuth } from '../context/AuthContext.jsx'
@@ -19,10 +21,27 @@ function changedLines(a = '', b = '') {
   return hits
 }
 
+async function fetchExplanation(source, patch, language, findings) {
+  try {
+    const data = await api.explainPatch({
+      original: source,
+      patched: patch.patched,
+      language,
+      notes: patch.notes,
+      findings: findings || [],
+    })
+    return data
+  } catch {
+    return null
+  }
+}
+
 export default function Patch() {
-  const { mission, runPatch } = useMission()
+  const { mission, setMission } = useMission()
   const { token } = useAuth()
   const navigate = useNavigate()
+  const [busy, setBusy] = useState(false)
+  const [explainLoading, setExplainLoading] = useState(false)
   const patch = mission.patch
   const highlights = useMemo(
     () => (patch ? changedLines(mission.source, patch.patched) : []),
@@ -30,14 +49,51 @@ export default function Patch() {
   )
 
   const generate = async () => {
+    setBusy(true)
+    setExplainLoading(true)
+
+    let nextPatch = null
+
     try {
       if (token && token !== 'demo-jwt-token') {
-        await api.patch({ code: mission.source, language: mission.language }, token)
+        const data = await api.patch(
+          {
+            code: mission.source,
+            language: mission.language,
+            findings: mission.scan?.findings || [],
+          },
+          token,
+        )
+        nextPatch = {
+          patched: data.patched,
+          notes: data.notes,
+          confidence: data.confidence,
+          riskReduction: data.riskReduction,
+          impact: data.impact,
+          explanation: data.explanation,
+        }
       }
     } catch {
-      /* local synthesis remains the source of truth for the demo deck */
+      /* fall through to local synthesis */
     }
-    runPatch()
+
+    if (!nextPatch) {
+      nextPatch = generatePatch(mission.source, mission.language)
+    }
+
+    if (!nextPatch.explanation) {
+      const explanation = await fetchExplanation(
+        mission.source,
+        nextPatch,
+        mission.language,
+        mission.scan?.findings,
+      )
+      if (explanation) nextPatch.explanation = explanation
+    }
+
+    setMission((m) => ({ ...m, patch: nextPatch }))
+    setBusy(false)
+    setExplainLoading(false)
   }
 
   return (
@@ -45,7 +101,9 @@ export default function Patch() {
       <PageHeader kicker="Defensive rewrite" title="SECURE PATCH" detail="Original corpus on the left. Hardened synthesis on the right." />
       <MissionStrip />
       <div className="mb-6 flex flex-wrap gap-3">
-        <NeonButton onClick={generate}>Synthesize Patch</NeonButton>
+        <NeonButton onClick={generate} disabled={busy}>
+          {busy ? 'Synthesizing…' : 'Synthesize Patch'}
+        </NeonButton>
         {patch && <NeonButton variant="ghost" onClick={() => navigate('/fuzz')}>Run Fuzz Campaign</NeonButton>}
       </div>
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
@@ -72,14 +130,12 @@ export default function Patch() {
             <p className="mt-2 text-mist">{patch.impact}</p>
           </GlassPanel>
           <GlassPanel className="p-5 md:col-span-3" hover={false} tone="yellow">
-            <p className="hud-label mb-3">AI explanation</p>
-            <ul className="space-y-2 text-sm text-fog">
-              {(patch.notes || []).map((n) => (
-                <li key={n} className="border-l-[3px] border-amber pl-3">
-                  {n}
-                </li>
-              ))}
-            </ul>
+            <p className="hud-label mb-3">ASTRA-X analysis</p>
+            <PatchExplanation
+              explanation={patch.explanation}
+              loading={explainLoading}
+              fallbackNotes={patch.notes}
+            />
           </GlassPanel>
         </div>
       )}
