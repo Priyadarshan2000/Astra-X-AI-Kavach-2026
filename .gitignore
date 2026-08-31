@@ -10,3 +10,4 @@ backend/uploads/*
 .env.local
 *.log
 .vite
+dist/

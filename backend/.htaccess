@@ -1,8 +1,23 @@
 Options -Indexes
-Header set Access-Control-Allow-Origin "*"
-Header set Access-Control-Allow-Headers "Authorization, Content-Type"
-Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+DirectoryIndex index.php
 
-<FilesMatch "\.(php|sql|env)$">
-  # served as API
+# Pass Authorization header to PHP (required for JWT on Apache/FastCGI)
+RewriteEngine On
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Preflight OPTIONS — bootstrap.php handles JSON CORS for actual requests
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^ - [R=204,L]
+
+<IfModule mod_headers.c>
+  Header always set Access-Control-Allow-Origin "*"
+  Header always set Access-Control-Allow-Headers "Authorization, Content-Type"
+  Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+  Header always set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# Block direct download of SQL dumps if uploaded by mistake
+<FilesMatch "\.(sql|env|md|sh)$">
+  Require all denied
 </FilesMatch>

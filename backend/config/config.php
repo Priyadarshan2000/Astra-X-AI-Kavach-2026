@@ -30,3 +30,10 @@ if (!defined('ASTRA_JWT_TTL')) {
 if (!defined('ASTRA_UPLOAD_DIR')) {
     define('ASTRA_UPLOAD_DIR', dirname(__DIR__) . '/uploads');
 }
+if (!defined('ASTRA_CORS_ORIGINS')) {
+    $cors = getenv('ASTRA_CORS_ORIGINS') ?: '';
+    define('ASTRA_CORS_ORIGINS', $cors !== '' ? $cors : 'https://astra-x-ai-kavach-2026.vercel.app,http://localhost:5173');
+}
+if (!defined('ASTRA_SETUP_KEY')) {
+    define('ASTRA_SETUP_KEY', getenv('ASTRA_SETUP_KEY') ?: '');
+}

@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 function astra_cors(): void
 {
-    $origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
-    header('Access-Control-Allow-Origin: ' . $origin);
-    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Headers: Authorization, Content-Type');
     header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
     header('Content-Type: application/json; charset=utf-8');

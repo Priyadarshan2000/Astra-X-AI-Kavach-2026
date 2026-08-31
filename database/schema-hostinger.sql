@@ -1,8 +1,5 @@
-CREATE DATABASE IF NOT EXISTS astra_x
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-
-USE astra_x;
+-- Import into existing Hostinger database (u262006317_priyaastrax) via phpMyAdmin.
+-- Select the database first, then Import this file (no CREATE DATABASE needed).
 
 CREATE TABLE IF NOT EXISTS users (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
