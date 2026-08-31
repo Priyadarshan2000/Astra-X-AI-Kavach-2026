@@ -67,5 +67,5 @@ export const api = {
   fuzz: (payload, token) => request('/fuzz.php', { method: 'POST', body: payload, token }),
   regression: (payload, token) => request('/regression.php', { method: 'POST', body: payload, token }),
   reports: (token) => request('/reports.php', { token }),
-  chat: (payload) => request('/chat.php', { method: 'POST', body: payload, timeoutMs: 15000 }),
+  chat: (payload) => request('/chat.php', { method: 'POST', body: payload, timeoutMs: 22000 }),
 }

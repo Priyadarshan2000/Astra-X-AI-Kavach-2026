@@ -72,7 +72,7 @@ export const TECH_STACK = [
   { layer: 'Frontend', items: 'React 19 · Vite 8 · Tailwind CSS 4 · Framer Motion · GSAP · React Three Fiber · Recharts' },
   { layer: 'Backend', items: 'PHP 8 REST API · PDO · JWT (HS256)' },
   { layer: 'Database', items: 'MySQL 8 — users, projects, scans, patches, reports' },
-  { layer: 'Agent', items: 'Context-aware rule engine · optional OpenAI for live LLM replies' },
+  { layer: 'Agent', items: 'Context-aware tactical reasoning · live inference when API linked' },
   { layer: 'Deploy', items: 'Vercel (frontend) · XAMPP / PHP built-in server (API)' },
 ]
 
@@ -118,7 +118,7 @@ export const AGENT_FEATURES = [
   'Guides next action on the command deck',
   'Answers Kavach 2026 and defensive doctrine questions',
   'Provides demo credentials and walkthrough hints',
-  'Optional OpenAI backend for natural-language replies',
+  'Live inference for natural-language mission guidance',
 ]
 
 export const REVIEWER_STEPS = [

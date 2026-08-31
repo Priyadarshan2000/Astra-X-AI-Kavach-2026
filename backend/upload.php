@@ -10,10 +10,10 @@ if (empty($_FILES['file']) || !is_uploaded_file($_FILES['file']['tmp_name'])) {
 }
 
 $file = $_FILES['file'];
-$allowed = ['c', 'h', 'cpp', 'cc', 'cxx', 'hpp', 'py', 'java'];
+$allowed = ['c', 'h', 'cpp', 'cc', 'cxx', 'hpp', 'py', 'java', 'js', 'mjs', 'jsx'];
 $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 if (!in_array($ext, $allowed, true)) {
-    json_fail('Unsupported language. Use C, C++, Python or Java.');
+    json_fail('Unsupported language. Use C, C++, Python, Java or JavaScript.');
 }
 if ($file['size'] > 512 * 1024) {
     json_fail('File exceeds 512KB limit.');

@@ -37,3 +37,6 @@ if (!defined('ASTRA_CORS_ORIGINS')) {
 if (!defined('ASTRA_SETUP_KEY')) {
     define('ASTRA_SETUP_KEY', getenv('ASTRA_SETUP_KEY') ?: '');
 }
+if (!defined('ASTRA_AI_KEY')) {
+    define('ASTRA_AI_KEY', getenv('ASTRA_AI_KEY') ?: '');
+}

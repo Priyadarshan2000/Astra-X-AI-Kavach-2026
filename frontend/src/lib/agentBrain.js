@@ -93,7 +93,7 @@ export function thinkAgentReply(message, { mission, isAuthed, pathname }) {
       }
     }
     return {
-      text: 'To run static scan: go to Scan, drop C/C++/Python/Java source or use the lab sample, then press Run Scan. ASTRA maps CWE-120 (buffer overflow), CWE-78 (command injection), CWE-134 (format string), and related classes with confidence scoring.',
+      text: 'To run static scan: go to Scan, drop C/C++/Python/Java/JS source or use the lab sample, then press Run Scan. ASTRA maps CWE-120 (buffer overflow), CWE-78 (command injection), CWE-79 (XSS), CWE-134 (format string), and related classes with confidence scoring.',
       suggestions: ['Go to scan', 'Mission status'],
     }
   }
@@ -206,16 +206,31 @@ export async function resolveAgentReply(message, context) {
         mission: {
           twin: context.mission?.twin ? { name: context.mission.twin.name } : null,
           scan: context.mission?.scan
-            ? { score: context.mission.scan.score, findings: context.mission.scan.findings?.length }
+            ? {
+                score: context.mission.scan.score,
+                findings: context.mission.scan.findings?.length,
+                top: context.mission.scan.findings?.slice(0, 3).map((f) => ({
+                  id: f.id,
+                  title: f.title,
+                  severity: f.severity,
+                  cwe: f.cwe,
+                })),
+              }
             : null,
-          patch: Boolean(context.mission?.patch),
+          patch: context.mission?.patch
+            ? { confidence: context.mission.patch.confidence, notes: context.mission.patch.notes?.length }
+            : null,
           fuzz: context.mission?.fuzz ? { rejected: context.mission.fuzz.rejected } : null,
           tests: Boolean(context.mission?.tests),
         },
       },
     })
     if (data?.reply) {
-      return { text: data.reply, suggestions: data.suggestions || [] }
+      return {
+        text: data.reply,
+        suggestions: data.suggestions?.length ? data.suggestions : thinkAgentReply(message, context).suggestions,
+        live: data.engine === 'live',
+      }
     }
   } catch {
     /* local brain fallback */

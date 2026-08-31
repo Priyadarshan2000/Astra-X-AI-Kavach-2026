@@ -14,7 +14,7 @@ $projectId = (int) ($input['project_id'] ?? 0);
 if (trim($code) === '') {
     json_fail('Source corpus is empty.');
 }
-if (!in_array($language, ['c', 'cpp', 'python', 'java'], true)) {
+if (!in_array($language, ['c', 'cpp', 'python', 'java', 'javascript'], true)) {
     json_fail('Unsupported language.');
 }
 

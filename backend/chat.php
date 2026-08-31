@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/bootstrap.php';
+require_once __DIR__ . '/includes/ai.php';
 
 $input = json_input();
 $message = trim((string) ($input['message'] ?? ''));
@@ -10,21 +11,27 @@ if ($message === '') {
     json_fail('Message required.');
 }
 
-$secretsFile = __DIR__ . '/config/secrets.php';
-$openaiKey = null;
-if (is_file($secretsFile)) {
-    require_once $secretsFile;
-    $openaiKey = defined('ASTRA_OPENAI_KEY') ? (string) ASTRA_OPENAI_KEY : null;
+$aiKey = defined('ASTRA_AI_KEY') ? (string) ASTRA_AI_KEY : '';
+if ($aiKey === '' && defined('ASTRA_OPENAI_KEY')) {
+    $aiKey = (string) ASTRA_OPENAI_KEY;
 }
 
-if ($openaiKey && $openaiKey !== '' && $openaiKey !== 'replace-with-openai-key') {
-    $reply = astra_openai_chat($message, $context, $openaiKey);
+if ($aiKey !== '' && $aiKey !== 'replace-with-ai-key') {
+    $reply = astra_ai_chat($message, $context, $aiKey);
     if ($reply !== null) {
-        json_ok(['reply' => $reply, 'suggestions' => astra_suggestions($message)]);
+        json_ok([
+            'reply' => $reply,
+            'suggestions' => astra_ai_suggestions($message, $context),
+            'engine' => 'live',
+        ]);
     }
 }
 
-json_ok(['reply' => astra_rule_reply($message, $context), 'suggestions' => astra_suggestions($message)]);
+json_ok([
+    'reply' => astra_rule_reply($message, $context),
+    'suggestions' => astra_ai_suggestions($message, $context),
+    'engine' => 'local',
+]);
 
 function astra_rule_reply(string $message, array $context): string
 {
@@ -64,53 +71,4 @@ function astra_rule_reply(string $message, array $context): string
     }
 
     return 'I can assist with mission status, the tactical loop, Kavach 2026, and defensive doctrine. Try "mission status" or "next step".';
-}
-
-function astra_suggestions(string $message): array
-{
-    $q = strtolower($message);
-    if (str_contains($q, 'status')) {
-        return ['Next step', 'Kavach 2026'];
-    }
-    return ['Mission status', 'Next step', 'Demo login', 'Kavach 2026'];
-}
-
-function astra_openai_chat(string $message, array $context, string $apiKey): ?string
-{
-    $system = 'You are ASTRA-X, the Autonomous Security Tactical Reasoning Agent for Kavach 2026 Indian Army cyber demonstration. '
-        . 'You assist reviewers with defensive software assurance: digital twin, static CWE scan, secure patch, lab fuzz, regression. '
-        . 'Never suggest exploits or live attacks. Be concise, professional, use military-cyber tone. '
-        . 'Context: ' . json_encode($context);
-
-    $payload = json_encode([
-        'model' => 'gpt-4o-mini',
-        'messages' => [
-            ['role' => 'system', 'content' => $system],
-            ['role' => 'user', 'content' => $message],
-        ],
-        'max_tokens' => 320,
-        'temperature' => 0.4,
-    ]);
-
-    $ch = curl_init('https://api.openai.com/v1/chat/completions');
-    curl_setopt_array($ch, [
-        CURLOPT_POST => true,
-        CURLOPT_HTTPHEADER => [
-            'Content-Type: application/json',
-            'Authorization: Bearer ' . $apiKey,
-        ],
-        CURLOPT_POSTFIELDS => $payload,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT => 12,
-    ]);
-    $raw = curl_exec($ch);
-    $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-
-    if ($raw === false || $code < 200 || $code >= 300) {
-        return null;
-    }
-
-    $data = json_decode((string) $raw, true);
-    return $data['choices'][0]['message']['content'] ?? null;
 }

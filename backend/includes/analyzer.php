@@ -16,6 +16,12 @@ function analyze_source(string $code, string $language): array
         ['re' => '/eval\s*\(|exec\s*\(/', 'langs' => ['python'], 'title' => 'Dynamic code execution', 'cwe' => 'CWE-95', 'severity' => 'critical', 'risk' => 98, 'confidence' => 0.97, 'fix' => 'Remove eval/exec; parse with ast.literal_eval if needed.'],
         ['re' => '/execute\s*\(\s*["\'].*\+/', 'langs' => ['java'], 'title' => 'SQL concatenation', 'cwe' => 'CWE-89', 'severity' => 'critical', 'risk' => 94, 'confidence' => 0.95, 'fix' => 'Use PreparedStatement placeholders.'],
         ['re' => '/Runtime\.getRuntime\(\)\.exec/', 'langs' => ['java'], 'title' => 'Runtime.exec injection', 'cwe' => 'CWE-78', 'severity' => 'high', 'risk' => 90, 'confidence' => 0.91, 'fix' => 'Use ProcessBuilder with a fixed argument list.'],
+        ['re' => '/eval\s*\(/', 'langs' => ['javascript'], 'title' => 'Dynamic code execution', 'cwe' => 'CWE-95', 'severity' => 'critical', 'risk' => 98, 'confidence' => 0.97, 'fix' => 'Remove eval; parse with JSON.parse or a schema validator.'],
+        ['re' => '/new\s+Function\s*\(/', 'langs' => ['javascript'], 'title' => 'Function constructor injection', 'cwe' => 'CWE-95', 'severity' => 'critical', 'risk' => 96, 'confidence' => 0.96, 'fix' => 'Avoid new Function; use static handlers or safe parsers.'],
+        ['re' => '/\.innerHTML\s*=/', 'langs' => ['javascript'], 'title' => 'DOM XSS via innerHTML', 'cwe' => 'CWE-79', 'severity' => 'high', 'risk' => 91, 'confidence' => 0.94, 'fix' => 'Use textContent or sanitize with DOMPurify.'],
+        ['re' => '/document\.write\s*\(/', 'langs' => ['javascript'], 'title' => 'DOM XSS via document.write', 'cwe' => 'CWE-79', 'severity' => 'high', 'risk' => 88, 'confidence' => 0.92, 'fix' => 'Avoid document.write; use safe DOM APIs.'],
+        ['re' => '/exec\s*\([^)]*\+/', 'langs' => ['javascript'], 'title' => 'Shell command injection', 'cwe' => 'CWE-78', 'severity' => 'critical', 'risk' => 95, 'confidence' => 0.96, 'fix' => 'Use spawn/execFile with a fixed argument array.'],
+        ['re' => '/`SELECT[^`]*\$\{/', 'langs' => ['javascript'], 'title' => 'SQL string interpolation', 'cwe' => 'CWE-89', 'severity' => 'critical', 'risk' => 93, 'confidence' => 0.94, 'fix' => 'Use parameterized queries with bound placeholders.'],
     ];
 
     $findings = [];
@@ -113,6 +119,25 @@ function generate_patch(string $code, string $language): array
         if (str_contains($patched, 'Runtime.getRuntime()')) {
             $patched = preg_replace('/Runtime\.getRuntime\(\)\.exec\([^;]+;/', 'new ProcessBuilder("id").start();', $patched) ?? $patched;
             $notes[] = 'Replaced Runtime.exec with a fixed ProcessBuilder.';
+        }
+    }
+
+    if ($language === 'javascript') {
+        if (preg_match('/eval\s*\(/', $patched)) {
+            $patched = preg_replace('/eval\s*\([^)]+\)/', 'JSON.parse(safePayload)', $patched) ?? $patched;
+            $notes[] = 'Removed eval; switched to JSON.parse.';
+        }
+        if (preg_match('/\.innerHTML\s*=/', $patched)) {
+            $patched = preg_replace('/\.innerHTML\s*=\s*/', '.textContent = ', $patched) ?? $patched;
+            $notes[] = 'Replaced innerHTML with textContent.';
+        }
+        if (preg_match('/document\.write\s*\(/', $patched)) {
+            $patched = preg_replace('/document\.write\s*\([^)]+\);?/', '/* document.write removed — use textContent */', $patched) ?? $patched;
+            $notes[] = 'Removed document.write sink.';
+        }
+        if (preg_match('/exec\s*\([^)]*\+/', $patched)) {
+            $patched = preg_replace('/exec\s*\([^)]+\)/', 'spawn("ping", ["-c", "1", host])', $patched) ?? $patched;
+            $notes[] = 'Replaced exec string concat with spawn argument list.';
         }
     }
 

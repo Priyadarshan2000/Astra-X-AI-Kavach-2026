@@ -90,7 +90,29 @@ void ingest(char* payload) {
     memcpy(dest, payload, 64);
 }
 `,
+  javascript: `// api_gateway.js — insecure Node gateway
+const { exec } = require('child_process');
+
+function renderBanner(userInput) {
+  document.getElementById('banner').innerHTML = userInput;  // DOM XSS
+  document.write(userInput);
 }
+
+function runProbe(host) {
+  exec('ping -c 1 ' + host);       // command injection
+}
+
+function loadConfig(raw) {
+  return eval('(' + raw + ')');    // dynamic code execution
+}
+
+async function findOperator(db, id) {
+  return db.query(\`SELECT * FROM operators WHERE id=\${id}\`);  // SQLi
+}
+`,
+}
+
+const SAMPLE_EXT = { c: 'c', cpp: 'cpp', python: 'py', java: 'java', javascript: 'js' }
 
 export function languageFromName(name = '') {
   const ext = name.split('.').pop()?.toLowerCase()
@@ -98,7 +120,12 @@ export function languageFromName(name = '') {
   if (['cpp', 'cc', 'cxx', 'hpp'].includes(ext)) return 'cpp'
   if (['py'].includes(ext)) return 'python'
   if (['java'].includes(ext)) return 'java'
+  if (['js', 'mjs', 'jsx'].includes(ext)) return 'javascript'
   return 'c'
+}
+
+export function sampleFileName(lang) {
+  return `sample.${SAMPLE_EXT[lang] || lang}`
 }
 
 export function analyzeSource(code = '', language = 'c') {
@@ -117,6 +144,12 @@ export function analyzeSource(code = '', language = 'c') {
     { re: /eval\s*\(|exec\s*\(/, language: ['python'], title: 'Dynamic code execution', cwe: 'CWE-95', severity: 'critical', risk: 98, confidence: 0.97, fix: 'Remove eval/exec; parse with ast.literal_eval if needed.' },
     { re: /execute\s*\(\s*["'].*\+/, language: ['java'], title: 'SQL concatenation', cwe: 'CWE-89', severity: 'critical', risk: 94, confidence: 0.95, fix: 'Use PreparedStatement placeholders.' },
     { re: /Runtime\.getRuntime\(\)\.exec/, language: ['java'], title: 'Runtime.exec injection', cwe: 'CWE-78', severity: 'high', risk: 90, confidence: 0.91, fix: 'Use ProcessBuilder with a fixed argument list.' },
+    { re: /eval\s*\(/, language: ['javascript'], title: 'Dynamic code execution', cwe: 'CWE-95', severity: 'critical', risk: 98, confidence: 0.97, fix: 'Remove eval; parse with JSON.parse or a schema validator.' },
+    { re: /new\s+Function\s*\(/, language: ['javascript'], title: 'Function constructor injection', cwe: 'CWE-95', severity: 'critical', risk: 96, confidence: 0.96, fix: 'Avoid new Function; use static handlers or safe parsers.' },
+    { re: /\.innerHTML\s*=/, language: ['javascript'], title: 'DOM XSS via innerHTML', cwe: 'CWE-79', severity: 'high', risk: 91, confidence: 0.94, fix: 'Use textContent or sanitize with DOMPurify.' },
+    { re: /document\.write\s*\(/, language: ['javascript'], title: 'DOM XSS via document.write', cwe: 'CWE-79', severity: 'high', risk: 88, confidence: 0.92, fix: 'Avoid document.write; use safe DOM APIs.' },
+    { re: /exec\s*\([^)]*\+/, language: ['javascript'], title: 'Shell command injection', cwe: 'CWE-78', severity: 'critical', risk: 95, confidence: 0.96, fix: 'Use spawn/execFile with a fixed argument array.' },
+    { re: /`SELECT[^`]*\$\{/, language: ['javascript'], title: 'SQL string interpolation', cwe: 'CWE-89', severity: 'critical', risk: 93, confidence: 0.94, fix: 'Use parameterized queries with bound placeholders.' },
   ]
 
   rules.forEach((rule, index) => {
@@ -212,6 +245,25 @@ export function generatePatch(code = '', language = 'c') {
     if (patched.includes('Runtime.getRuntime()')) {
       patched = patched.replace(/Runtime\.getRuntime\(\)\.exec\([^;]+;/, 'new ProcessBuilder("id").start();')
       notes.push('Replaced Runtime.exec with a fixed ProcessBuilder.')
+    }
+  }
+
+  if (language === 'javascript') {
+    if (/eval\s*\(/.test(patched)) {
+      patched = patched.replace(/eval\s*\([^)]+\)/g, 'JSON.parse(safePayload)')
+      notes.push('Removed eval; switched to JSON.parse.')
+    }
+    if (/\.innerHTML\s*=/.test(patched)) {
+      patched = patched.replace(/\.innerHTML\s*=\s*/g, '.textContent = ')
+      notes.push('Replaced innerHTML with textContent.')
+    }
+    if (/document\.write\s*\(/.test(patched)) {
+      patched = patched.replace(/document\.write\s*\([^)]+\);?/g, '/* document.write removed — use textContent */')
+      notes.push('Removed document.write sink.')
+    }
+    if (/exec\s*\([^)]*\+/.test(patched)) {
+      patched = patched.replace(/exec\s*\([^)]+\)/g, 'spawn("ping", ["-c", "1", host])')
+      notes.push('Replaced exec string concat with spawn argument list.')
     }
   }
 

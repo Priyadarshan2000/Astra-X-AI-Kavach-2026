@@ -1,6 +1,6 @@
 import { Highlight, themes } from 'prism-react-renderer'
 
-const LANG = { c: 'c', cpp: 'cpp', python: 'python', java: 'java' }
+const LANG = { c: 'c', cpp: 'cpp', python: 'python', java: 'java', javascript: 'javascript' }
 
 export default function CodePane({ code = '', language = 'c', highlightLines = [], label }) {
   return (

@@ -5,7 +5,7 @@ import GlassPanel from '../components/ui/GlassPanel.jsx'
 import NeonButton from '../components/ui/NeonButton.jsx'
 import PageHeader from '../components/ui/PageHeader.jsx'
 import MissionStrip from '../components/ui/MissionStrip.jsx'
-import { languageFromName, SAMPLE_CODE } from '../data/mock.js'
+import { languageFromName, SAMPLE_CODE, sampleFileName } from '../data/mock.js'
 import { useMission } from '../context/MissionContext.jsx'
 import { api } from '../api/client.js'
 import { useAuth } from '../context/AuthContext.jsx'
@@ -73,7 +73,7 @@ export default function Scan() {
           >
             <div className="text-center">
               <Upload className="mx-auto mb-3 h-8 w-8 text-cyan" />
-              <p className="text-mist">Drop C / C++ / Python / Java</p>
+              <p className="text-mist">Drop C / C++ / Python / Java / JS</p>
               <button
                 type="button"
                 onClick={() => inputRef.current?.click()}
@@ -84,7 +84,7 @@ export default function Scan() {
               <input
                 ref={inputRef}
                 type="file"
-                accept=".c,.h,.cpp,.cc,.cxx,.hpp,.py,.java"
+                accept=".c,.h,.cpp,.cc,.cxx,.hpp,.py,.java,.js,.mjs,.jsx"
                 className="hidden"
                 onChange={(e) => e.target.files?.[0] && acceptFile(e.target.files[0])}
               />
@@ -94,7 +94,7 @@ export default function Scan() {
             {Object.keys(SAMPLE_CODE).map((lang) => (
               <button
                 key={lang}
-                onClick={() => ingestSource({ source: SAMPLE_CODE[lang], language: lang, fileName: `sample.${lang === 'python' ? 'py' : lang}` })}
+                onClick={() => ingestSource({ source: SAMPLE_CODE[lang], language: lang, fileName: sampleFileName(lang) })}
                 className="rounded-lg border-[2.5px] border-ink bg-cyan px-3 py-1 text-xs uppercase tracking-widest text-ink shadow-[3px_3px_0_#ff2e97] transition hover:-translate-x-0.5 hover:-translate-y-0.5"
               >
                 Load {lang}
